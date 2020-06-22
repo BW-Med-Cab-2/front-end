@@ -16,7 +16,7 @@ const Register = () => {
                 <StyleLabel>Email:&nbsp;
                     <StyleInput
                         type='text'
-                        name='email'
+                        name='primaryemail'
                     />
                 </StyleLabel>
                 <StyleLabel>Password:&nbsp;
