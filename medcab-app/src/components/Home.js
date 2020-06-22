@@ -6,8 +6,8 @@ const Home = () => {
     return (
         <div>
             <Splash src={splash}/>
-            <StyleP>Ready to find a better alternative to medicine? <StyleLink>Register Now!</StyleLink></StyleP>
-            <StyleP>Already a Member? <StyleLink>Sign In!</StyleLink></StyleP>
+            <StyleP>Ready to find a better alternative to medicine? <StyleLink to='/register'>Register Now!</StyleLink></StyleP>
+            <StyleP>Already a Member? <StyleLink to='/login'>Sign In!</StyleLink></StyleP>
         </div>
     )
 }

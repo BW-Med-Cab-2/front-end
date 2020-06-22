@@ -59,7 +59,7 @@ transition: all .5s ease;
 
 //Forms
 export const ContainerFormDiv = styled.div`
-width: 40%;
+width: 50%;
 font-family: 'Nunito', sans-serif;
 background-color: #FEFEFE;
 margin: 0 auto;
@@ -70,7 +70,7 @@ font-size: 1rem;
 font-family: 'Nunito', sans-serif;
 letter-spacing: .1rem;
 display: block;
-width: 90%;
+width: 50%;
 padding: 0.4rem;
 border: 1px solid #333;
 border-radius: 2px;
@@ -103,7 +103,7 @@ export const StyleBtns = styled.button`
     background-color: #E84C3D;
     padding: 1.5% 3%;
     border: 1px solid #333333;
-    border-radius: 2px;
+    border-radius: 3px;
     margin: 1%;
     transition: all .5s ease;
 

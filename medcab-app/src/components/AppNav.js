@@ -7,15 +7,15 @@ const AppNav = () => {
             <Heading>Medical Cabinet</Heading>
             <NavbarUl>
                 <NavbarLi>
-                    <NavbarLink>Home</NavbarLink>
+                    <NavbarLink to='/'>Home</NavbarLink>
                 </NavbarLi>
 
                 <NavbarLi>
-                    <NavbarLink>Login</NavbarLink>
+                    <NavbarLink to='/login'>Login</NavbarLink>
                 </NavbarLi>
                     
                 <NavbarLi>
-                    <NavbarLink>Register</NavbarLink>
+                    <NavbarLink to='/register'>Register</NavbarLink>
                 </NavbarLi>
             </NavbarUl>
         </NavbarDiv>
