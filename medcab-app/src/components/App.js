@@ -12,6 +12,7 @@ import axios from 'axios'
 import * as Yup from 'yup'
 import loginSchema from '../validation/loginSchema'
 import registerSchema from '../validation/registerSchema'
+import Dashboard from './Dashboard'
 
 //////Initial Values//////
 const initialLogin = {
@@ -25,22 +26,22 @@ const initialRegister = {
 }
 const initialErrors = {
   username: '',
-  email: '',
+  primaryemail: '',
   password: ''
 }
 const initialDisable = true
 
-
+const tempUser= 'tempuser'
+const tempPass= 'password'
 function App() {
   //////Use States//////
   const [ login, setLogin ] = useState(initialLogin)
   const [ register, setRegister ] = useState(initialRegister)
   const [ disable, setDisable ] = useState(initialDisable)
   const [ errors, setErrors ] = useState(initialErrors)
+  const [user, setUser] = useState() //user state
 
-  //////Axios Get & Post Requests//////
-
-  //////Event Handlers//////
+  //////Login Handlers//////
   const loginHandler = e => {
     const {name, value} = e.target
     
@@ -64,6 +65,33 @@ function App() {
       [name]: value
     })
   }
+  const logSubmitHandler = e => {
+    e.preventDefault()
+
+    const userCheck = {
+      username: login.username.trim(),
+      password: login.password.trim()
+    }
+                                //////temps will be placed with userCheck props//////
+    axios.post('https://medcab2.herokuapp.com/login', `grant_type=password&username=${tempUser}&password=${tempPass}`, {
+      headers: {
+        // btoa is converting our client id/client secret into base64
+        Authorization: `Basic ${btoa('lambda-client:lambda-secret')}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+      .then(res => {
+        console.log(res.data.access_token)
+        localStorage.setItem('token', res.data.access_token)
+        this.props.history.push('/users')
+      })
+      .catch(err => console.dir(err))
+      .finally(() => {
+        setLogin(initialLogin)
+      })
+  }
+
+  //////Registration Handlers//////
   const registerHandler = e => {
     const {name, value} = e.target
    
@@ -87,16 +115,26 @@ function App() {
       [name]: value
     })
   }
-  const submitHandler = e => {
+  const regSubmitHandler = e => {
     e.preventDefault()
-
+    console.log('Confirmation you got here')
     const newUser = {
       username: register.username.trim(),
-      email: register.email.trim(),
+      primaryemail: register.primaryemail.trim(),
       password: register.password.trim()
     }
 
-    //TO DO 3!!Invoke axios post// 
+    axios.post('https://medcab2.herokuapp.com/createnewuser', newUser)
+      .then(response => {
+        debugger
+        console.log(response)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+      .finally(() => {
+        setRegister(initialRegister)
+      })
   }
 
   //////UseEffects for Login and Register//////
@@ -115,14 +153,14 @@ function App() {
     <ContainerDiv>
       <AppNav />
       <Switch>
-        <Route path='/dashboard'>
-
+        <Route path='/protected' component={Dashboard} >
         </Route>
 
         <Route path='/login'>
           <Login
             component={Login}
             onInput={loginHandler}
+            onSubmit={logSubmitHandler}
             disabled={disable}
             login={login}
             errors={errors}
@@ -133,7 +171,7 @@ function App() {
           <Register
           component={Register}
           onInput={registerHandler}
-          onSubmit={submitHandler}
+          onSubmit={regSubmitHandler}
           disabled={disable}
           register={register}
           errors={errors} />

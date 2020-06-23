@@ -7,6 +7,7 @@ import { StyleP, ContainerFormDiv, StyleLabel, StyleInput, StyleBtns } from '../
 const Login = props => {
     const {
         onInput,
+        onSubmit,
         disabled,
         login,
         errors
@@ -15,25 +16,27 @@ const Login = props => {
         <div>
             <StyleP>Login</StyleP>
             <ContainerFormDiv>
-                <StyleLabel>Username:&nbsp;
-                    <StyleInput 
-                        type='text'
-                        name='username'
-                        value={login.username}
-                        onChange={onInput}
-                    />
-                </StyleLabel>
-                <StyleP>{errors.username}</StyleP>
-                <StyleLabel>Password:&nbsp;
-                    <StyleInput 
-                        type='text'
-                        name='password'
-                        value={login.password}
-                        onChange={onInput}
-                    />
-                </StyleLabel>
-                <StyleP>{errors.password}</StyleP>
-                <StyleBtns>Log In</StyleBtns>
+                <form  onSubmit={onSubmit} >
+                    <StyleLabel>Username:&nbsp;
+                        <StyleInput 
+                            type='text'
+                            name='username'
+                            value={login.username}
+                            onChange={onInput}
+                        />
+                    </StyleLabel>
+                    <StyleP>{errors.username}</StyleP>
+                    <StyleLabel>Password:&nbsp;
+                        <StyleInput 
+                            type='text'
+                            name='password'
+                            value={login.password}
+                            onChange={onInput}
+                        />
+                    </StyleLabel>
+                    <StyleP>{errors.password}</StyleP>
+                    <StyleBtns id='LoginBtn' disabled={disabled}>Log In</StyleBtns>
+                </form>
             </ContainerFormDiv>
         </div>
     )
