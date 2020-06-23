@@ -37,6 +37,7 @@ function App() {
   const [ register, setRegister ] = useState(initialRegister)
   const [ disable, setDisable ] = useState(initialDisable)
   const [ errors, setErrors ] = useState(initialErrors)
+  const [user, setUser] = useState() //user state
 
   //////Axios Get & Post Requests//////
 
@@ -115,7 +116,7 @@ function App() {
     <ContainerDiv>
       <AppNav />
       <Switch>
-        <Route path='/dashboard'>
+        <Route path='/protected' component={Dashboard} >
 
         </Route>
 
