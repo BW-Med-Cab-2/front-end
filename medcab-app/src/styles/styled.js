@@ -1,6 +1,11 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+////TO DO 4!Restyle fonts and colors////
+//Header: font-family: "Yellowtail", cursive;
+//Everything else: font-family: "Quicksand", sans-serif;
+
+
 //App
 export const ContainerDiv = styled.div`
 display:flex;

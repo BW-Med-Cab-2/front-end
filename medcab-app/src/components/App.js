@@ -1,3 +1,4 @@
+//Import List//
 import React, { useState, useEffect } from 'react';
 import '../styles/App.css';
 import { Switch, Route } from 'react-router-dom'
@@ -38,9 +39,7 @@ function App() {
 
   //////Axios Get & Post Requests//////
 
-
   //////Event Handlers//////
-  //!!TO DO 1!!Build schemas and import//
   const loginHandler = e => {
     const {name, value} = e.target
     
@@ -87,7 +86,7 @@ function App() {
       [name]: value
     })
   }
-  const onSubmit = e => {
+  const submitHandler = e => {
     e.preventDefault()
 
     const newUser = {
@@ -96,30 +95,52 @@ function App() {
       password: register.password.trim()
     }
 
-    //TO DO 3!!Invoke axios post//
+    //TO DO 3!!Invoke axios post// 
   }
 
-  //TO DO 2!!Implement useEffect for form-disables//
+  //////UseEffects for Login and Register//////
+  useEffect(() => {
+    loginSchema.isValid(login).then(valid => {
+      setDisable(!valid);
+    })
+  }, [login])
+  useEffect(() => {
+    registerSchema.isValid(register).then(valid => {
+      setDisable(!valid);
+    })
+  }, [register])
 
   return (
     <ContainerDiv>
       <AppNav />
       <Switch>
-        <Route path='/dashboard' 
-        />
+        <Route path='/dashboard'>
 
-        <Route path='/login' 
-        component={Login}
-        disabled={disable}
-        login={login}
-        />
+        </Route>
 
-        <Route path='/register' 
-        component={Register}
-        disabled={disable}
-        register={register}
-        />
-        <Route path='/' component={Home} />
+        <Route path='/login'>
+          <Login
+            component={Login}
+            onInput={loginHandler}
+            disabled={disable}
+            login={login}
+            errors={errors}
+            />
+        </Route>
+
+        <Route path='/register'>
+          <Register
+          component={Register}
+          onInput={registerHandler}
+          onSubmit={submitHandler}
+          disabled={disable}
+          register={register}
+          errors={errors} />
+        </Route>
+
+        <Route path='/'>
+          <Home />
+        </Route>
       </Switch>
     </ContainerDiv>
   );

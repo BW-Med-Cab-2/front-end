@@ -5,16 +5,17 @@ const formSchema = Yup.object().shape({
       .string()
       .min(6, "Usermame must be at least 6 characters long.")
       .max(15, 'Username may be no longer than 15 characters.')
+      .matches(/^\w+$/, 'Username can only contain alphanumeric characters.')
       .required("Please enter a valid username."),
-      email: Yup
+    primaryemail: Yup
       .string()
       .email("Must be a valid email address.")
       .required("Must include email address."),
     password: Yup
       .string()
       .required('Must include password.')
-      .min(8, "Passwords must contain at least 8 characters.")
-      .matches(/[a-zA-Z0-9]/, 'Password can only contain alphanumeric characters.')
+      .min(8, "Password must contain at least 8 characters.")
+      .matches(/(?=.*\d)/, 'Password must contain at least one number.')
   })
   
   export default formSchema
