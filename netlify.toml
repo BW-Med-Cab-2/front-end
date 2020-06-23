@@ -1,7 +1,7 @@
 [build]
   command = "npm run build"
   publish="medcab-app/build"
-  base = "medcab-app"
+  base = "medcab-app/"
 
   [[redirects]]
   from = "/*"
