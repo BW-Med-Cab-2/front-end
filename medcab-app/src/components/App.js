@@ -13,6 +13,7 @@ import * as Yup from 'yup'
 import loginSchema from '../validation/loginSchema'
 import registerSchema from '../validation/registerSchema'
 import Dashboard from './Dashboard'
+import Questions from './Questions';
 
 //////Initial Values//////
 const initialLogin = {
@@ -175,6 +176,10 @@ function App() {
           disabled={disable}
           register={register}
           errors={errors} />
+        </Route>
+
+        <Route path='/tempform'>
+          <Questions />
         </Route>
 
         <Route path='/'>
