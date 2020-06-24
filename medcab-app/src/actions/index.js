@@ -101,12 +101,12 @@ export const addUser = (newUser) => dispatch => {
 
 //UPDATE User
 
-export const updateUser = (user) => dispatch => { //should it be props or user...???
+export const updateUser = (user) => dispatch => { 
   //const [ userUpdate, setUserUpdate ] =  useState(initialUserForm) //set initial user values up top
 useEffect(() => {
   dispatch({ type: UPDATE_USER_START })
   axiosWithAuth()
-  .put(`/users/${user.id}`, userUpdate)
+  .put(`/users/${user.id}`) //
   .then((res) => {
     console.log(res);
     dispatch({ type: UPDATE_USER_SUCCESS, payload: res.data })
@@ -132,5 +132,5 @@ export const deleteUser = user => dispatch => {
       push('/') //push to the main page
     })
     .catch(err => 
-      dispatch({ type: DELETE_USER_ERROR, payload: 'There was an error deleting the user' })))
+      dispatch({ type: DELETE_USER_ERROR, payload: 'There was an error deleting the user' }))
 };
