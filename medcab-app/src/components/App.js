@@ -15,6 +15,10 @@ import registerSchema from '../validation/registerSchema'
 import Dashboard from './Dashboard'
 import Questions from './Questions';
 
+import { connect } from 'react-redux';
+import { getUser, addUser, loginUser } from '../actions'
+import { axiosWithAuth } from '../utils/axiosWithAuth';
+
 //////Initial Values//////
 const initialLogin = {
   username:'',
@@ -34,13 +38,13 @@ const initialDisable = true
 
 const tempUser= 'tempuser'
 const tempPass= 'password'
-function App() {
+function App(props) {
   //////Use States//////
   const [ login, setLogin ] = useState(initialLogin)
   const [ register, setRegister ] = useState(initialRegister)
   const [ disable, setDisable ] = useState(initialDisable)
   const [ errors, setErrors ] = useState(initialErrors)
-  const [user, setUser] = useState() //user state
+  const [users, setUsers] = useState() //user state
 
   //////Login Handlers//////
   const loginHandler = e => {
@@ -73,23 +77,29 @@ function App() {
       username: login.username.trim(),
       password: login.password.trim()
     }
-                                //////temps will be placed with userCheck props//////
-    axios.post('https://medcab2.herokuapp.com/login', `grant_type=password&username=${tempUser}&password=${tempPass}`, {
-      headers: {
-        // btoa is converting our client id/client secret into base64
-        Authorization: `Basic ${btoa('lambda-client:lambda-secret')}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
-      .then(res => {
-        console.log(res.data.access_token)
-        localStorage.setItem('token', res.data.access_token)
-        this.props.history.push('/users')
-      })
-      .catch(err => console.dir(err))
-      .finally(() => {
-        setLogin(initialLogin)
-      })
+
+    props.loginUser()
+     
+    setLogin(initialLogin)
+      
+    //                             //////temps will be placed with userCheck props//////
+    // axiosWithAuth()
+    // .post('/login', `grant_type=password&username=${tempUser}&password=${tempPass}`, {
+    //   headers: {
+    //     // btoa is converting our client id/client secret into base64
+    //     Authorization: `Basic ${btoa('lambda-client:lambda-secret')}`,
+    //     'Content-Type': 'application/x-www-form-urlencoded'
+    //   }
+    // })
+    //   .then(res => {
+    //     console.log(res.data.access_token)
+    //     localStorage.setItem('token', res.data.access_token)
+    //     this.props.history.push('/users')
+    //   })
+    //   .catch(err => console.dir(err))
+    //   .finally(() => {
+    //     setLogin(initialLogin)
+    //   })
   }
 
   //////Registration Handlers//////
@@ -125,17 +135,21 @@ function App() {
       password: register.password.trim()
     }
 
-    axios.post('https://medcab2.herokuapp.com/createnewuser', newUser)
-      .then(response => {
-        debugger
-        console.log(response)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-      .finally(() => {
-        setRegister(initialRegister)
-      })
+    props.addUser(newUser)
+    setRegister(initialRegister)
+// add a new User (Register)
+    // axiosWithAuth()
+    // .post('/createnewuser', newUser)
+    //   .then(response => {
+    //     debugger
+    //     console.log(response)
+    //   })
+    //   .catch(error => {
+    //     console.log(error)
+    //   })
+    //   .finally(() => {
+    //     setRegister(initialRegister)
+    //   })
   }
 
   //////UseEffects for Login and Register//////
@@ -190,4 +204,14 @@ function App() {
   );
 }
 
-export default App;
+//make sure this is correct ... do I need mSTP
+// const mSTP = state => {
+//     return {
+//         user: state.user,
+//         isAdded: state.is Added,
+//         isFetchingData: state.isFetchingData
+//     }
+// }
+
+
+export default connect(null, {getUser, addUser, loginUser}) (App);
