@@ -85,7 +85,7 @@ font-family: "Quicksand", sans-serif;
 `
 
 export const StyleSelect = styled.select`
-padding-bottom:2%;
+margin-bottom:4%;
 `
 
 //error div text

@@ -51,7 +51,7 @@ export const loginUser = () => dispatch => {
   dispatch({ type: LOGIN_USER_START })
     //////temps will be placed with userCheck props//////
     axiosWithAuth()
-    .post('/login', `grant_type=password&username=${tempUser}&password=${tempPass}`, {
+    .post('/login', `grant_type=password&username=tempuser&password=password`, {
       headers: {
         // btoa is converting our client id/client secret into base64
         Authorization: `Basic ${btoa('lambda-client:lambda-secret')}`,
