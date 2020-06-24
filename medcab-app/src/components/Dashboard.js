@@ -12,7 +12,7 @@ const Dashboard = () => {
             <Splash src={splash}/>
             <StyleP> User Dashboard goes here </StyleP>
             <p> make form to update and user info to display</p>
-            
+
             < UserCard />
             
         </div>
@@ -22,7 +22,7 @@ const Dashboard = () => {
 //make sure this is correct ... do I need mSTP
 // const mSTP = state => {
 //     return {
-//         user: state.user,
+//         users: state.users,
 //         isUpdated: state.isUpdated,
 //         isDeleted: state.isDeleted
 //     }

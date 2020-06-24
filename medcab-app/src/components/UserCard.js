@@ -1,25 +1,25 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { updateUser, deleteUser } from '../actions';
+//import { connect } from 'react-redux';
+//import { updateUser, deleteUser } from '../actions';
 
 const UserCard = (props) => {
-useEffect(() =>{
+useEffect((props) =>{
   props.getUser()
 }, []
 )
 console.log(props.user)
-  const handleFetch = e => {
-    e.preventDefault();
-    props.getUser();
-  };
+  // const handleFetch = e => {
+  //   e.preventDefault();
+  //   props.getUser();
+  // };
 
   return (
     <div>
       <div>
-        {props.user.map(uCard => {
+        {props.users.map(user => {
           return (
-            <div key={uCard.id}>
-              <h2> {uCard.name} </h2>
+            <div key={user.id}>
+              <h2> {user.name} </h2>
            <p> other info I haven't decided on yet</p>
             </div>
           )
@@ -33,7 +33,7 @@ console.log(props.user)
 };
 // const mSTP = state => {
 //   return {
-//     user: state.user,
+//     users: state.users,
 //     isFetchingData: state.isFetchingData
 //   }
 // }

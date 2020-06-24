@@ -1,86 +1,136 @@
 //ACTIONS 
 
 
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import { useHistory } from 'react-router-dom'
 
-export const FETCH_USER = 'FETCH_USER'; // .get request to find the user (added)
-export const ADD_USER = 'ADD_USER'; // .post request to add a user (added)
-export const UPDATE_USER = 'UPDATE_USER'; // .put to update the user
-export const DELETE_USER = 'DELETE_USER'; // .delete the user
+//Login .get
+export const LOGIN_USER_START = 'LOGIN_USER_START'; 
+export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS'; 
+export const LOGIN_USER_ERROR = 'LOGIN_USER_ERROR'; 
+
+//Fetch user .get
+export const FETCH_USER_START = 'FETCH_USER_START'; 
+export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS'; 
+export const FETCH_USER_ERROR = 'FETCH_USER_ERROR'; 
+
+//Add user .post
+export const ADD_USER_START = 'ADD_USER_START'; 
+export const ADD_USER_SUCCESS = 'ADD_USER_SUCCESS'; 
+export const ADD_USER_ERROR = 'ADD_USER-ERROR'; 
+
+//Update user .put
+export const UPDATE_USER_START = 'UPDATE_USER_START'; 
+export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS'; 
+export const UPDATE_USER_ERROR = 'UPDATE_USER_ERROR'; 
+
+// delete user .delete
+export const DELETE_USER_START = 'DELETE_USER_START'; 
+export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS'; 
+export const DELETE_USER_ERROR = 'DELETE_USER_ERROR'; 
 
 
-//////Initial Values//////
-const initialUserForm = {
-  name:'',
-  age:''
+
+
+
+const initialLogin = {
+  username:'',
+  password:''
+}
+
+const tempUser= 'tempuser'
+const tempPass= 'password'
+
+
+
+//login stuff
+export const loginUser = () => dispatch => {
+ //401 error
+
+  dispatch({ type: LOGIN_USER_START })
+    //////temps will be placed with userCheck props//////
+    axiosWithAuth()
+    .post('/login', `grant_type=password&username=${tempUser}&password=${tempPass}`, {
+      headers: {
+        // btoa is converting our client id/client secret into base64
+        Authorization: `Basic ${btoa('lambda-client:lambda-secret')}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+      .then(res => {
+        console.log(res.data)
+        localStorage.setItem('token', res.data.access_token)
+        this.props.history.push('/users')
+        dispatch({ type: LOGIN_USER_SUCCESS }) //payload: res.data ???
+      })
+      .catch(err => 
+        dispatch({ type: LOGIN_USER_ERROR, payload: 'There was an error loggin in the user'  }))
+
 }
 
 
 //Find the User Dashboard
 export const getUser= (user) => dispatch => {//get user's dashboard
-  dispatch({ type: FETCH_USER });
+  dispatch({ type: FETCH_USER_START });
   axiosWithAuth()
   .get(`/users/${user}`)
   .then(res => {
     console.log(res.data);
     //setUser(res.data)
-    dispatch({ type: FETCH_USER, payload: res.data })
+    dispatch({ type: FETCH_USER_SUCCESS, payload: res.data })
   })
   .catch(err =>
-    console.log('There was an error finding the user', err.message));
+    dispatch({ type: FETCH_USER_ERROR, payload: 'There was an error finding the user' }))
 };
 
-//ADD USER (Create a new user)
-export const addUser = (user) => dispatch => {
-  dispatch({ type: ADD_USER });
+//ADD USER (Create a new user) WORKS!!!
+export const addUser = (newUser) => dispatch => {
+  dispatch({ type: ADD_USER_START });
   axiosWithAuth()
-  .post(`/createnewuser/${user}`, {
-    name: user.name,
-    age: user.age,
-    //fix this later to actual user form initial values
-  })
-  .then((res) => {
-    //setUser(res.data);
-    console.log('Added new user', res.data);
-    dispatch({ type: ADD_USER, payload: res.data}) //set payload after completing form
-  }) //end then
- .catch(err =>
-  console.log('There was an error adding the user', err.message));
+  .post('/createnewuser', newUser)
+    .then(response => {
+      debugger
+      console.log(response)
+      dispatch({ type: ADD_USER_SUCCESS, payload: response }) //does it need a payload maybe take away
+    })
+    .catch(err => {
+      dispatch({ type: ADD_USER_ERROR, payload: 'There was an error adding the user' })
+    })
 };
 
 //UPDATE User
 
 export const updateUser = (user) => dispatch => { //should it be props or user...???
-  //const [ updateUser, setUpdateUser ] =  useState(initialUserForm) //set initial user values up top
+  //const [ userUpdate, setUserUpdate ] =  useState(initialUserForm) //set initial user values up top
 useEffect(() => {
-  dispatch({ type: UPDATE_USER })
+  dispatch({ type: UPDATE_USER_START })
   axiosWithAuth()
-  .put(`/users/${user.id}`, updateUser)
+  .put(`/users/${user.id}`, userUpdate)
   .then((res) => {
     console.log(res);
-    dispatch({ type: UPDATE_USER, payload: res.data })
-    //setUpdateUser(res.data) //or ser it to update the setUser state ????
+    dispatch({ type: UPDATE_USER_SUCCESS, payload: res.data })
+    //setUserUpdate(res.data) //
   })
   .catch(err => {
-    console.log('There was an error updating the user', err)
+    dispatch({ type: UPDATE_USER_ERROR, payload: 'There was an error updating the user' })
   })
-}, [])//may need id in dependancy array
+})//may need id in dependancy array
 };
 
 //DELETE User
 
 export const deleteUser = user => dispatch => {
   const {push} = useHistory ();
-  dispatch({ type: DELETE_USER })
+  dispatch({ type: DELETE_USER_START })
   // make a delete request to delete this user
   axiosWithAuth()
-    .delete(`/users/${user.id}`, user) //user or setUser or setEditUser ???
+    .delete(`/users/${user.id}`) //user or setUser or setEditUser ???
     .then(res => {
       console.log('user deleted', res)
-      dispatch({ type: DELETE_USER, payload: {} }) //paylod gives empty object
+      dispatch({ type: DELETE_USER_SUCCESS, payload: {} }) //paylod gives empty object
       push('/') //push to the main page
     })
-    .catch(err => console.log(err))
+    .catch(err => 
+      dispatch({ type: DELETE_USER_ERROR, payload: 'There was an error deleting the user' })))
 };
