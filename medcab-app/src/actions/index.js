@@ -19,7 +19,7 @@ const initialUserForm = {
 
 
 //Find the User Dashboard
-export const getUser= (user) => dispatch => {
+export const getUser= (user) => dispatch => {//get user's dashboard
   dispatch({ type: FETCH_USER });
   axiosWithAuth()
   .get(`/users/${user}`)
@@ -32,11 +32,11 @@ export const getUser= (user) => dispatch => {
     console.log('There was an error finding the user', err.message));
 };
 
-//ADD USER
+//ADD USER (Create a new user)
 export const addUser = (user) => dispatch => {
   dispatch({ type: ADD_USER });
   axiosWithAuth()
-  .post(`/users/${user}`, {
+  .post(`/createnewuser/${user}`, {
     name: user.name,
     age: user.age,
     //fix this later to actual user form initial values
@@ -57,7 +57,7 @@ export const updateUser = (user) => dispatch => { //should it be props or user..
 useEffect(() => {
   dispatch({ type: UPDATE_USER })
   axiosWithAuth()
-  .put(`/users/${user.id}`)
+  .put(`/users/${user.id}`, updateUser)
   .then((res) => {
     console.log(res);
     dispatch({ type: UPDATE_USER, payload: res.data })

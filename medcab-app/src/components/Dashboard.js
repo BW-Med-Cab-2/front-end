@@ -4,6 +4,7 @@ import { Splash, StyleLink, StyleBtns, StyleP } from '../styles/styled'
 import splash from '../Assets/cannabisSplash.jpg'
 import { connect } from 'react-redux';
 import { updateUser, deleteUser } from '../actions'
+import UserCard from './UserCard';
 
 const Dashboard = () => {
     return (
@@ -11,6 +12,8 @@ const Dashboard = () => {
             <Splash src={splash}/>
             <StyleP> User Dashboard goes here </StyleP>
             <p> make form to update and user info to display</p>
+            
+            < UserCard />
             
         </div>
     )
