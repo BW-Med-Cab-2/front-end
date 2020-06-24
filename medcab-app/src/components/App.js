@@ -15,6 +15,9 @@ import registerSchema from '../validation/registerSchema'
 import Dashboard from './Dashboard'
 import Questions from './Questions';
 
+import { connect } from 'react-redux';
+import { getUser, addUser } from '../actions'
+
 //////Initial Values//////
 const initialLogin = {
   username:'',
@@ -190,4 +193,14 @@ function App() {
   );
 }
 
-export default App;
+//make sure this is correct ... do I need mSTP
+// const mSTP = state => {
+//     return {
+//         user: state.user,
+//         isAdded: state.is Added,
+//         isFetchingData: state.isFetchingData
+//     }
+// }
+
+
+export default connect(null, {getUser, addUser}) (App);

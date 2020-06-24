@@ -19,7 +19,7 @@ const initialUserForm = {
 
 
 //Find the User Dashboard
-export const getUser= () => dispatch => {
+export const getUser= (user) => dispatch => {
   dispatch({ type: FETCH_USER });
   axiosWithAuth()
   .get(`/users/${user}`)
@@ -52,7 +52,7 @@ export const addUser = (user) => dispatch => {
 
 //UPDATE User
 
-const updateUser = (user) => dispatch => { //should it be props or user...???
+export const updateUser = (user) => dispatch => { //should it be props or user...???
   //const [ updateUser, setUpdateUser ] =  useState(initialUserForm) //set initial user values up top
 useEffect(() => {
   dispatch({ type: UPDATE_USER })
@@ -66,12 +66,12 @@ useEffect(() => {
   .catch(err => {
     console.log('There was an error updating the user', err)
   })
-}, [id])
+}, [])//may need id in dependancy array
 };
 
 //DELETE User
 
-const deleteUser = user => dispatch => {
+export const deleteUser = user => dispatch => {
   const {push} = useHistory ();
   dispatch({ type: DELETE_USER })
   // make a delete request to delete this user
