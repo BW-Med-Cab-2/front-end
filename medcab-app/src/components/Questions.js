@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { StyleP, StyleLabel, StyleInput, ContainerFormDiv, StyleBtns, FormHeading } from '../styles/styled'
 import QuestionInput from './QuestionInput';
 import axios from 'axios'
-import { useHistory } from 'react-router-dom'
 
 const initialSymptoms= [
     {name:'Symptom 1',value:''},
@@ -15,10 +14,6 @@ const initialSymptoms= [
 const Questions = props => {
     const [ symptoms, setSymptoms ] = useState(initialSymptoms)
     const history=useHistory()
-
-    const dashReturn = () => {
-        history.push('/protected')
-    }
 
     const symptomHandler = e => {
         const {name, value} = e.target
@@ -41,7 +36,7 @@ const Questions = props => {
                 }
             }
             )
-            .then(res=> dashReturn)
+            .then(res=> console.log(res))
             .catch(err => console.log(err))
             .finally(()=> setSymptoms(initialSymptoms))
     }
