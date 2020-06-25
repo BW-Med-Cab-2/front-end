@@ -71,7 +71,7 @@ export const loginUser = () => dispatch => {
 }
 
 
-//Find the User Dashboard
+//Find the User Dashboard (kinda works) -- need to check token
 export const getUser= (user) => dispatch => {//get user's dashboard
   dispatch({ type: FETCH_USER_START });
   
