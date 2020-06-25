@@ -168,7 +168,7 @@ function App(props) {
     <ContainerDiv>
       <AppNav />
       <Switch>
-        {/* //add protected again after dashboard is built */}
+        {/* //add protected again after dashboard and api is built */}
         <Route path='/dashboard' component={Dashboard} > 
         </Route>
 

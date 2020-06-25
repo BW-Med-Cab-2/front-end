@@ -30,7 +30,7 @@ import {
   DELETE_STRAIN_SUCCESS
    
 } from './actionTypes'
-import Axios from 'axios'
+import axios from 'axios'
 
 
 //temp username and password
@@ -102,7 +102,7 @@ export const addUser = (newUser) => dispatch => {
 
 export const getSymptoms = () => dispatch => {
   dispatch({ type: FETCH_SYMPTOM_START })
-  Axios
+  axios
     .get('url')
     .then(res => {
       console.log(res.data);
@@ -157,8 +157,7 @@ export const deleteSymptom = symptom => dispatch => {
 //Get strain
 export const getStrain= () => dispatch => {//get strain
   dispatch({ type: GET_STRAIN_START })
-  axiosWithAuth()
-  .get(`https://med-cab-1415.herokuapp.com/toptenrating`) //using top ten now change when have correct endpoint
+  const res = axios.get(`https://med-cab-1415.herokuapp.com/toptenrating`) //using top ten now change when have correct endpoint
   .then(res => {
     console.log(res.data);
     //setStrain(res.data)

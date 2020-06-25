@@ -8,7 +8,10 @@ useEffect((props) =>{
 }, []
 )
 
-
+const initialStrainState = {
+  strains: [],
+  isFetchingData: false,
+}
 
 console.log(props.user)
   // const handleFetch = e => {
