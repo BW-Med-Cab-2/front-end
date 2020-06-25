@@ -56,7 +56,7 @@ padding: .6rem 1rem;
 transition: all .5s ease;
 
 &:focus, &:hover, &:active {
-  color: #002f01;
+  color: black;
 }
 `
 
@@ -136,7 +136,8 @@ export const StyleBtns = styled.button`
     font-family: "Quicksand", sans-serif;
 
     &:hover, &:active {
-      background-color: #002f01;
+      background-color: black;
+      color: forestgreen;
     }
 `
 
