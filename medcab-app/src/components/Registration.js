@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleP, StyleLabel, StyleInput, ContainerFormDiv, StyleBtns } from '../styles/styled'
+import { StyleP, StyleLabel, StyleInput, ContainerFormDiv, StyleBtns, FormHeading } from '../styles/styled'
 
 const Register = props => {
     const {
@@ -12,7 +12,7 @@ const Register = props => {
     
     return (
         <div>
-            <StyleP>Register</StyleP>
+            <FormHeading>Register</FormHeading>
             <ContainerFormDiv >
                 <form onSubmit={onSubmit} >
                     <StyleLabel>Username:&nbsp;
