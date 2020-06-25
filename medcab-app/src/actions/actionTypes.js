@@ -1,0 +1,39 @@
+//Login .get 
+export const LOGIN_USER_START = 'LOGIN_USER_START'; 
+export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS'; 
+export const LOGIN_USER_ERROR = 'LOGIN_USER_ERROR'; 
+
+//Fetch user .get
+export const FETCH_USER_START = 'FETCH_USER_START'; 
+export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS'; 
+export const FETCH_USER_ERROR = 'FETCH_USER_ERROR'; 
+
+//Add user .post
+export const ADD_USER_START = 'ADD_USER_START'; 
+export const ADD_USER_SUCCESS = 'ADD_USER_SUCCESS'; 
+export const ADD_USER_ERROR = 'ADD_USER-ERROR'; 
+
+//Fetch symptom .get
+export const FETCH_SYMPTOM_START = 'FETCH_SYMPTOM_START'; 
+export const FETCH_SYMPTOM_SUCCESS = 'FETCH_SYMPTOM_SUCCESS'; 
+export const FETCH_SYMPTOM_ERROR = 'FETCH_SYMPTOM_ERROR'; 
+
+//Update symptom .put
+export const UPDATE_SYMPTOM_START = 'UPDATE_SYMPTOM_START'; 
+export const UPDATE_SYMPTOM_SUCCESS = 'UPDATE_SYMPTOM_SUCCESS'; 
+export const UPDATE_SYMPTOM_ERROR = 'UPDATE_SYMPTOM_ERROR'; 
+
+// delete symptom .delete
+export const DELETE_SYMPTOM_START = 'DELETE_SYMPTOM_START'; 
+export const DELETE_SYMPTOM_SUCCESS = 'DELETE_SYMPTOM_SUCCESS'; 
+export const DELETE_SYMPTOM_ERROR = 'DELETE_SYMPTOM_ERROR'; 
+
+// get strain
+export const GET_STRAIN_START = 'GET_STRAIN_START';
+export const GET_STRAIN_SUCCESS = 'GET_STRAIN_SUCCESS';
+export const GET_STRAIN_ERROR = 'GET_STRAIN_ERROR';
+
+//delete strain
+export const DELETE_STRAIN_START = 'DELETE_STRAIN_START';
+export const DELETE_STRAIN_SUCCESS = 'DELETE_STRAIN_SUCCESS';
+export const DELETE_STRAIN_ERROR = 'DELETE_STRAIN_ERROR';

@@ -3,49 +3,45 @@
 import { useEffect } from 'react'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import { useHistory } from 'react-router-dom'
+import { 
+  LOGIN_USER_START,
+  LOGIN_USER_SUCCESS,
+  LOGIN_USER_ERROR,
+  ADD_USER_START,
+  ADD_USER_ERROR,
+  ADD_USER_SUCCESS,
+  FETCH_USER_START,
+  FETCH_USER_ERROR,
+  FETCH_USER_SUCCESS,
+  FETCH_SYMPTOM_START,
+  FETCH_SYMPTOM_ERROR,
+  FETCH_SYMPTOM_SUCCESS,
+  UPDATE_SYMPTOM_START,
+  UPDATE_SYMPTOM_ERROR,
+  UPDATE_SYMPTOM_SUCCESS,
+  DELETE_SYMPTOM_START,
+  DELETE_SYMPTOM_SUCCESS,
+  DELETE_SYMPTOM_ERROR,
+  GET_STRAIN_START,
+  GET_STRAIN_ERROR,
+  GET_STRAIN_SUCCESS,
+  DELETE_STRAIN_START,
+  DELETE_STRAIN_ERROR,
+  DELETE_STRAIN_SUCCESS
+   
+} from './actionTypes'
+import Axios from 'axios'
 
-//Login .get 
-export const LOGIN_USER_START = 'LOGIN_USER_START'; 
-export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS'; 
-export const LOGIN_USER_ERROR = 'LOGIN_USER_ERROR'; 
-
-//Fetch user .get
-export const FETCH_USER_START = 'FETCH_USER_START'; 
-export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS'; 
-export const FETCH_USER_ERROR = 'FETCH_USER_ERROR'; 
-
-//Add user .post
-export const ADD_USER_START = 'ADD_USER_START'; 
-export const ADD_USER_SUCCESS = 'ADD_USER_SUCCESS'; 
-export const ADD_USER_ERROR = 'ADD_USER-ERROR'; 
-
-//Update user .put
-export const UPDATE_USER_START = 'UPDATE_USER_START'; 
-export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS'; 
-export const UPDATE_USER_ERROR = 'UPDATE_USER_ERROR'; 
-
-// delete user .delete
-export const DELETE_USER_START = 'DELETE_USER_START'; 
-export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS'; 
-export const DELETE_USER_ERROR = 'DELETE_USER_ERROR'; 
-
-// get strain
-export const GET_STRAIN_START = 'GET_STRAIN_START';
-export const GET_STRAIN_SUCCESS = 'GET_STRAIN_SUCCESS';
-export const GET_STRAIN_ERROR = 'GET_STRAIN_ERROR';
-
-//delete strain
-export const DELETE_STRAIN_START = 'DELETE_STRAIN_START';
-export const DELETE_STRAIN_SUCCESS = 'DELETE_STRAIN_SUCCESS';
-export const DELETE_STRAIN_ERROR = 'DELETE_STRAIN_ERROR';
 
 //temp username and password
 const tempUser= 'tempuser'
 const tempPass= 'password'
 
+// const strainURL
 
+// const symptomURL
 
-//login stuff
+//login stuff kind of works
 export const loginUser = () => dispatch => {
  //401 error
 
@@ -102,40 +98,59 @@ export const addUser = (newUser) => dispatch => {
     })
 };
 
-//UPDATE User
+//get symptoms
 
-export const updateUser = (user) => dispatch => { 
-  //const [ userUpdate, setUserUpdate ] =  useState(initialUserForm) //set initial user values up top
+export const getSymptoms = () => dispatch => {
+  dispatch({ type: FETCH_SYMPTOM_START })
+  Axios
+    .get('url')
+    .then(res => {
+      console.log(res.data);
+    dispatch({
+      type: FETCH_SYMPTOM_SUCCESS, payload: res.data })
+    })
+    .catch (err => {
+      console.log(err.response.message)
+      dispatch({
+        type: FETCH_SYMPTOM_ERROR,
+        payload: 'There was an error finding your symptoms'
+      })
+    })
+};
+
+//UPDATE Symptom
+export const updateSymptom = (symptom) => dispatch => { 
+ 
 useEffect(() => {
-  dispatch({ type: UPDATE_USER_START })
+  dispatch({ type: UPDATE_SYMPTOM_START })
   axiosWithAuth()
-  .put(`/users/${user.id}`) //
+  .put(`url`) //update symptoms
   .then((res) => {
     console.log(res);
-    dispatch({ type: UPDATE_USER_SUCCESS, payload: res.data })
-    //setUserUpdate(res.data) //
+    dispatch({ type: UPDATE_SYMPTOM_SUCCESS, payload: res.data })
+    //setSymptomUpdate(res.data) //
   })
   .catch(err => {
-    dispatch({ type: UPDATE_USER_ERROR, payload: 'There was an error updating the user' })
+    dispatch({ type: UPDATE_SYMPTOM_ERROR, payload: 'There was an error updating the symptom' })
   })
 })//may need id in dependancy array
 };
 
-//DELETE User
+//DELETE Symptom
 
-export const deleteUser = user => dispatch => {
+export const deleteSymptom = symptom => dispatch => {
   const {push} = useHistory ();
-  dispatch({ type: DELETE_USER_START })
+  dispatch({ type: DELETE_SYMPTOM_START })
   // make a delete request to delete this user
   axiosWithAuth()
-    .delete(`/users/${user.id}`) //user or setUser or setEditUser ???
+    .delete(`url${symptom.id}`) //
     .then(res => {
-      console.log('user deleted', res)
-      dispatch({ type: DELETE_USER_SUCCESS, payload: {} }) //paylod gives empty object
-      push('/') //push to the main page
+      console.log('symptom deleted', res)
+      dispatch({ type: DELETE_SYMPTOM_SUCCESS, payload: {} }) //paylod gives empty object
+      push('/dashboard') //push to the dashboard page
     })
     .catch(err => 
-      dispatch({ type: DELETE_USER_ERROR, payload: 'There was an error deleting the user' }))
+      dispatch({ type: DELETE_SYMPTOM_ERROR, payload: 'There was an error deleting the symptom' }))
 };
 
 
@@ -143,7 +158,7 @@ export const deleteUser = user => dispatch => {
 export const getStrain= () => dispatch => {//get strain
   dispatch({ type: GET_STRAIN_START })
   axiosWithAuth()
-  .get(`url`)
+  .get(`https://med-cab-1415.herokuapp.com/toptenrating`) //using top ten now change when have correct endpoint
   .then(res => {
     console.log(res.data);
     //setStrain(res.data)
@@ -168,3 +183,6 @@ export const deleteStrain = strain => dispatch => {
     .catch(err => 
       dispatch({ type: DELETE_STRAIN_ERROR, payload: 'There was an error deleting the strain' }))
 };
+
+
+

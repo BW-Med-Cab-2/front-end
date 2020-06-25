@@ -1,16 +1,14 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { updateUser, deleteUser, getStrain, deleteStrain } from '../actions';
+import { getStrain, deleteStrain, getUser } from '../actions';
 
 const UserCard = (props) => {
 useEffect((props) =>{
-  props.getUser()
+  getUser()
 }, []
 )
 
-useEffect((props) => {
-  props.getStrain()
-})
+
 
 console.log(props.user)
   // const handleFetch = e => {
@@ -19,46 +17,37 @@ console.log(props.user)
   // };
 
   return (
-    <div>
-      <div>
-        {props.user.map(user => {
-          return (
-            <div key={user.id}>
-              <h2> Welcome {user.name} </h2>
-          
-            <button> Questions </button>
-            <p> reccommendations would go here (map over form results ?)</p>
-            {props.results.map(strain => {
-              return (
-                <div key={strain.id}>
-               <h3>{strain.strain}</h3> 
-               <p>{strain.flavors}</p> 
-              <p>{strain.effects}</p> 
-              <p>{strain.medical}</p> 
-              <p>{strain.type}</p> 
-              <p>{strain.rating}</p> 
-              </div>
-              )
-            })}
-            </div>
-          )
-        })}
-        
+    <div className='userDashboard'>
+      <h2> Welcome {props.user}</h2>
+      <div className='questions'> 
+        <p>Tell us your symptoms and we will offer a suggestion.</p>
+        <button>Start Here</button>
       </div>
-      <button> Update User Profile</button>
-      <button> Delete User Profile</button>
+      <div className='suggested'>
+        suggested strains would be here
+        <ul>
+      <li> strains will show here</li>
+        </ul>
+      </div>
+      <div className='symptoms'>
+        <p>(map over symptom resuslts)</p>
+        <ul>symptoms will show here</ul>
+      <button> Change Symptoms</button>
+      <button> Delete Symptoms</button>
+    </div>
+     
     </div>
   )
 };
-const mSTP = state => {
-  return {
-    user: state.user,
-       strain: state.strain,
-    isFetchingData: state.isFetchingData
-  }
-}
+// const mSTP = state => {
+//   return {
+//     user: state.user,
+//        strain: state.strain,
+//     isFetchingData: state.isFetchingData
+//   }
+// }
 
-export default connect(mSTP, {updateUser, deleteUser, getStrain, deleteStrain})(UserCard);
+export default connect(null, { getUser, getStrain, deleteStrain})(UserCard);
 
 
 

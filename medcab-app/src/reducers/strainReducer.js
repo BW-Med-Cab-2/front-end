@@ -6,7 +6,7 @@ import {
   DELETE_STRAIN_START,
   DELETE_STRAIN_SUCCESS,
   DELETE_STRAIN_ERROR  
-} from '../actions'
+} from '../actions/actionTypes'
 
 //initial state 
 
