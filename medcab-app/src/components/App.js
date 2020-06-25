@@ -32,7 +32,7 @@ const initialRegister = {
 const initialErrors = {
   username: '',
   primaryemail: '',
-  password: ''
+  password: '',
 }
 const initialDisable = true
 
@@ -128,7 +128,6 @@ function App(props) {
   }
   const regSubmitHandler = e => {
     e.preventDefault()
-    console.log('Confirmation you got here')
     const newUser = {
       username: register.username.trim(),
       primaryemail: register.primaryemail.trim(),

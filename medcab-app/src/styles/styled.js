@@ -84,6 +84,10 @@ font-size: 1.2rem;
 font-family: "Quicksand", sans-serif;
 `
 
+export const StyleSelect = styled.select`
+margin-bottom:4%;
+`
+
 //error div text
 export const StyleError = styled.div`
 font-size: 1rem;
