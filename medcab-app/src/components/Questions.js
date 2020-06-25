@@ -11,8 +11,6 @@ const initialSymptoms= [
     {name:'Symptom 4',value:''},
     {name:'Symptom 5',value:''}
 ]
-
-
 const Questions = props => {
     const [ symptoms, setSymptoms ] = useState(initialSymptoms)
 
@@ -25,18 +23,11 @@ const Questions = props => {
     } 
     const symptomSubmit = e => {
         e.preventDefault()
-        let symList = []
-        let symValues = []
 
         //Need to map through the symptoms array
-        symList = symptoms.filter(symptom => symptom.value.length > 0)
-        symValues = symList.forEach(index => {
-            symValues.push(index.value)
-            console.log(symValues)
-        })
+        const symValues = symptoms.filter(symptom => symptom.value.length > 0).map(symptom => symptom.value).join(', ')
 
         console.log(symValues)
-
         //Join the filtered array with (', ') for result of value, value, etc.
         //Post the resulting string to desired endpoint
     }
