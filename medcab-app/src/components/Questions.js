@@ -24,9 +24,8 @@ const Questions = props => {
     const symptomSubmit = e => {
         e.preventDefault()
 
-        //Need to map through the symptoms array
         const symValues = symptoms.filter(symptom => symptom.value.length > 0).map(symptom => symptom.value).join(', ')
-
+        ///GOT IT!
         console.log(symValues)
         //Join the filtered array with (', ') for result of value, value, etc.
         //Post the resulting string to desired endpoint
