@@ -56,6 +56,18 @@ padding: .6rem 1rem;
 transition: all .5s ease;
 
 &:focus, &:hover, &:active {
+  color: black;
+}
+`
+
+export const NavbarA = styled.a`
+color: black;
+display: block;
+text-decoration: none;
+padding: .6rem 1rem;
+transition: all .5s ease;
+
+&:focus, &:hover, &:active {
   color: #E84C3D;
 }
 `
@@ -67,6 +79,12 @@ font-family: "Quicksand", sans-serif;
 background-color: whitesmoke;
 margin: 0 auto;
 padding: 0;
+`
+export const FormHeading = styled.h2`
+text-align:center;
+font-size:1.5rem;
+width:100%;
+font-family: "Quicksand", sans-serif;
 `
 export const StyleInput = styled.input`
 font-size: 1rem;
@@ -82,6 +100,10 @@ margin: 2% auto;
 export const StyleLabel = styled.label`
 font-size: 1.2rem;
 font-family: "Quicksand", sans-serif;
+`
+
+export const StyleSelect = styled.select`
+margin-bottom:4%;
 `
 
 //error div text
@@ -104,7 +126,8 @@ font-family: "Quicksand", sans-serif;
 export const StyleBtns = styled.button`
     font-size: 1.2rem;
     color: #F3F3F3;
-    background-color: #E84C3D;
+    background-color: forestgreen;
+    opacity: 0.8; 
     padding: 1.5% 3%;
     border: 1px solid #333333;
     border-radius: 3px;
@@ -113,19 +136,20 @@ export const StyleBtns = styled.button`
     font-family: "Quicksand", sans-serif;
 
     &:hover, &:active {
-      background-color: #333333;
+      background-color: black;
+      color: forestgreen;
     }
 `
 
 //style the Links not in Navbar
 export const StyleLink = styled(Link)`
   text-decoration: none;
-  color: #E84C3D;
+  color: forestgreen;
   transition: all .5s ease;
 
   &:hover, &:active {
-    color: #333333;
-  }
+    color: #002f01;
+}
   `
 
   //Add style to Splash Image

@@ -1,0 +1,71 @@
+Hey Reese! So just adding this text file in to give you an idea of the things we had to change,
+(and I will also talk about the things that we still need to change, but that I'm not sure the intricacies)
+which again we will gladly chat about in a call this evening when you have time:
+
+*First Change*
+We updated the axiosWithAuth function.
+
+export const axiosWithAuth = () => {
+  const token = window.localStorage.getItem('token');
+  return Axios.create({
+    headers: {
+      Authorization: `Basic ${btoa('lambda-client:lambda-secret')}`,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+
+    baseURL:'https://medcab2.herokuapp.com/'
+  });
+}
+
+I'm not certain on the exact reason, perhaps Caleb can explain more, however, the only change is 
+that we had to insert the headers from your actions/index.js into here.
+
+
+*Second Change*
+We need a separate axios auth function to handle the signup.
+
+export const axiosRegister = () => {
+    //get token
+    const token = window.localStorage.getItem('token');
+  
+    //create new Instance
+    return Axios.create({
+      headers: {
+        authorization: token
+      },
+  
+      baseURL:'https://medcab2.herokuapp.com/'
+    });
+  }
+  
+This might seem counterproductive because this is exactly how you had it built
+in the first place, but because the headers we're submitting are different, we needed 
+different setups. Again, Caleb understands more about it than I do. XD
+
+
+*Third Change*
+We've gotten the submit handler working for the questionnaire!
+
+!!NOTE:!!
+This change is updated on the master branch, but I still feel you should be aware of it.
+This one honestly gave us the most issue, but we managed to get things figured out by
+restructuring how it was built and using Headers and stuff. HOWEVER, we're getting a response, 
+we aren't erroring at least, but the submit handler will still need some work.
+
+
+Which leads to 
+
+*To Do 1:*
+
+Response from submit handler on Questions.js will need to be updated.
+Currently, the response from the get request is just being console logged; 
+our .then() will need to be reworked to redirect the user to the dashboard, 
+and to set the data you need from res into state on the dashboard.
+(Unsure of the updated path or how to access the dashboard) 
+
+
+Besides updating this submit handler, and building out the dashboard, 
+making sure the login page redirects(it wasn't on my end, but you've been 
+working on stuff, so not sure if something had changed), and making sure the
+registration page redirects to the login page upon submit, I think that's it
+for the things we need to be fully functioning!

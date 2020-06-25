@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 import React from 'react';
-import { StyleP, ContainerFormDiv, StyleLabel, StyleInput, StyleBtns } from '../styles/styled'
+import { StyleP, ContainerFormDiv, StyleLabel, StyleInput, StyleBtns, FormHeading } from '../styles/styled'
 
 
 const Login = props => {
@@ -14,7 +14,7 @@ const Login = props => {
     } = props
     return (
         <div>
-            <StyleP>Login</StyleP>
+            <FormHeading>Login</FormHeading>
             <ContainerFormDiv>
                 <form  onSubmit={onSubmit} >
                     <StyleLabel>Username:&nbsp;

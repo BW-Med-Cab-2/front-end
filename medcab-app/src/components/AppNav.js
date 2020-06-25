@@ -1,10 +1,12 @@
 import React from 'react';
-import { Heading, NavbarDiv, NavbarUl, NavbarLi, NavbarLink } from '../styles/styled'
+import { Heading, NavbarDiv, NavbarUl, NavbarLi, NavbarLink, NavbarA } from '../styles/styled'
 
 const AppNav = () => {
     return (
         <NavbarDiv>
-            <Heading>Medical Cabinet</Heading>
+            <Heading>
+                <NavbarA href='https://bw2medcabinet.netlify.app'>Medical Cabinet</NavbarA>
+            </Heading>
             <NavbarUl>
                 <NavbarLi>
                     <NavbarLink to='/'>Home</NavbarLink>
