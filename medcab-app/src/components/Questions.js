@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import { StyleP, StyleLabel, StyleInput, ContainerFormDiv, StyleBtns } from '../styles/styled'
+import { StyleP, StyleLabel, StyleInput, ContainerFormDiv, StyleBtns, FormHeading } from '../styles/styled'
 import QuestionInput from './QuestionInput';
 import * as Yup from 'yup'
 
@@ -27,13 +27,13 @@ const Questions = props => {
         const symValues = symptoms.filter(symptom => symptom.value.length > 0).map(symptom => symptom.value).join(', ')
         ///GOT IT!
         console.log(symValues)
-        //Join the filtered array with (', ') for result of value, value, etc.
         //Post the resulting string to desired endpoint
+        //Endpoint to use: https://medcab2.herokuapp.com/otherapis/strainmodel/${symValues}
     }
 
     return (
         <ContainerFormDiv>
-            <StyleP>Please select at least 1 symptom:</StyleP>
+            <FormHeading>Please select at least 1 symptom:</FormHeading>
             <form onSubmit={symptomSubmit}>
                 {symptoms.map(question => {
                     return (
