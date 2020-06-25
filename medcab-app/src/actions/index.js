@@ -51,7 +51,7 @@ export const loginUser = () => dispatch => {
   dispatch({ type: LOGIN_USER_START })
     //////temps will be placed with userCheck props//////
     axiosWithAuth()
-    .post('/login', `grant_type=password&username=${tempUser}&password=${tempPass}`, {
+    .post('/login/', `grant_type=password&username=${tempUser}&password=${tempPass}`, {
       headers: {
         // btoa is converting our client id/client secret into base64
         Authorization: `Basic ${btoa('lambda-client:lambda-secret')}`,
@@ -73,6 +73,7 @@ export const loginUser = () => dispatch => {
 //Find the User Dashboard
 export const getUser= (user) => dispatch => {//get user's dashboard
   dispatch({ type: FETCH_USER_START });
+  
   axiosWithAuth()
   .get(`/users/${user}`)
   .then(res => {
@@ -81,6 +82,7 @@ export const getUser= (user) => dispatch => {//get user's dashboard
     dispatch({ type: FETCH_USER_SUCCESS, payload: res.data })
   })
   .catch(err =>
+    console.log(err.response.message),
     dispatch({ type: FETCH_USER_ERROR, payload: 'There was an error finding the user' }))
 };
 
