@@ -1,11 +1,10 @@
 //ACTIONS 
 
-
 import { useEffect } from 'react'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import { useHistory } from 'react-router-dom'
 
-//Login .get
+//Login .get 
 export const LOGIN_USER_START = 'LOGIN_USER_START'; 
 export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS'; 
 export const LOGIN_USER_ERROR = 'LOGIN_USER_ERROR'; 
@@ -30,15 +29,17 @@ export const DELETE_USER_START = 'DELETE_USER_START';
 export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS'; 
 export const DELETE_USER_ERROR = 'DELETE_USER_ERROR'; 
 
+// get strain
+export const GET_STRAIN_START = 'GET_STRAIN_START';
+export const GET_STRAIN_SUCCESS = 'GET_STRAIN_SUCCESS';
+export const GET_STRAIN_ERROR = 'GET_STRAIN_ERROR';
 
+//delete strain
+export const DELETE_STRAIN_START = 'DELETE_STRAIN_START';
+export const DELETE_STRAIN_SUCCESS = 'DELETE_STRAIN_SUCCESS';
+export const DELETE_STRAIN_ERROR = 'DELETE_STRAIN_ERROR';
 
-
-
-const initialLogin = {
-  username:'',
-  password:''
-}
-
+//temp username and password
 const tempUser= 'tempuser'
 const tempPass= 'password'
 
@@ -135,4 +136,35 @@ export const deleteUser = user => dispatch => {
     })
     .catch(err => 
       dispatch({ type: DELETE_USER_ERROR, payload: 'There was an error deleting the user' }))
+};
+
+
+//Get strain
+export const getStrain= () => dispatch => {//get strain
+  dispatch({ type: GET_STRAIN_START })
+  axiosWithAuth()
+  .get(`url`)
+  .then(res => {
+    console.log(res.data);
+    //setStrain(res.data)
+    dispatch({ type: GET_STRAIN_SUCCESS, payload: res.data })
+  })
+  .catch(err =>
+    console.log(err.response.message),
+    dispatch({ type: GET_STRAIN_ERROR, payload: 'There was an error finding the strain' }))
+};
+
+
+//Delete Strain
+export const deleteStrain = strain => dispatch => {
+  dispatch({ type: DELETE_STRAIN_START })
+  // make a delete request to delete this user
+  axiosWithAuth()
+    .delete(`url/${strain.id}`) 
+    .then(res => {
+      console.log('strain deleted', res)
+      dispatch({ type: DELETE_STRAIN_SUCCESS, payload: {} }) //paylod gives empty object
+    })
+    .catch(err => 
+      dispatch({ type: DELETE_STRAIN_ERROR, payload: 'There was an error deleting the strain' }))
 };
