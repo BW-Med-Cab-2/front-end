@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { StyleP, StyleLabel, StyleInput, ContainerFormDiv, StyleBtns, FormHeading } from '../styles/styled'
 import QuestionInput from './QuestionInput';
-import * as Yup from 'yup'
+import axios from 'axios'
+import { useHistory } from 'react-router-dom'
 
 const initialSymptoms= [
     {name:'Symptom 1',value:''},
@@ -13,6 +14,11 @@ const initialSymptoms= [
 ]
 const Questions = props => {
     const [ symptoms, setSymptoms ] = useState(initialSymptoms)
+    const history=useHistory()
+
+    const dashReturn = () => {
+        history.push('/protected')
+    }
 
     const symptomHandler = e => {
         const {name, value} = e.target
@@ -23,12 +29,21 @@ const Questions = props => {
     } 
     const symptomSubmit = e => {
         e.preventDefault()
-
-        const symValues = symptoms.filter(symptom => symptom.value.length > 0).map(symptom => symptom.value).join(', ')
-        ///GOT IT!
+        const symValues = symptoms.filter(symptom => symptom.value.length > 0)
+                                    .map(symptom => symptom.value)
+                                    .join(', ')
         console.log(symValues)
-        //Post the resulting string to desired endpoint
-        //Endpoint to use: https://medcab2.herokuapp.com/otherapis/strainmodel/${symValues}
+        //Get the resulting strain from endpoint
+        axios.get(`https://medcab2.herokuapp.com/otherapis/strainmodel/${symValues}`, 
+            {
+                headers: {
+                'Authorization': `Bearer ${window.localStorage.getItem('token')}`
+                }
+            }
+            )
+            .then(res=> dashReturn)
+            .catch(err => console.log(err))
+            .finally(()=> setSymptoms(initialSymptoms))
     }
 
     return (
