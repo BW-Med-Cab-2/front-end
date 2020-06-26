@@ -53,24 +53,28 @@ function App(props) {
   const [ errors, setErrors ] = useState(initialErrors)
   const [ symptoms, setSymptoms ] = useState(initialSymptoms)
   const [ dashboard, setDashboard ] = useState({})
-  //Questions handelers
-  const symptomSubmit = e => {
-    e.preventDefault()
-    const symValues = symptoms.filter(symptom => symptom.value.length > 0)
+  const symValues = symptoms.filter(symptom => symptom.value.length > 0)
                                 .map(symptom => symptom.value)
                                 .join(', ')
-    //Get the resulting strain from endpoint
+  //Questions handelers
+  const symptomSubmit = e => {
+    e.preventDefault() //take sym values and put to a string
+    // const symValues = symptoms.filter(symptom => symptom.value.length > 0)
+    //                             .map(symptom => symptom.value)
+    //                             .join(', ')
+                                console.log(symValues)
+                                console.log(window.localStorage.getItem('token'))
+    //Get the resulting strain from endpoint - using my token and sym string
     axios.get(`https://medcab2.herokuapp.com/otherapis/strainmodel/${symValues}`, 
         {
-            headers: {
+            headers: {//hey i am logged in and here is my token
             'Authorization': `Bearer ${window.localStorage.getItem('token')}`
             }
         }
         )
-        .then(res => 
-          //we need to fix this because it is being dumb
-          setDashboard(res.data.currentStrain),
-          console.log(dashboard)
+        .then(res => //give me this
+          //Server issue - Error 500 Internal Server Error (was working fine a couple of hours ago now it isn't)
+          console.log(res.data.currentStrain.strain)
 
         )
         .catch(err => console.log(err))
@@ -178,7 +182,12 @@ function App(props) {
       <AppNav />
       <Switch>
         
-      <Route exact path="/protected" component={Dashboard} /> 
+      <Route exact path="/protected"> 
+          <Dashboard 
+          symptoms={symValues}
+          
+          />
+      </Route>
 
         <Route path='/login'>
           <Login

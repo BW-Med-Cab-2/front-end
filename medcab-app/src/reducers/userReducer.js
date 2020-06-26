@@ -15,6 +15,7 @@ import {
 
 const initialState = {
   user: '',
+  currentStrain: {},
   isLoggingIn: false,
   isLoggedIn: false,
   isFetchingData: false,

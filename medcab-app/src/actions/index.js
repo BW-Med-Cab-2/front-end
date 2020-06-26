@@ -74,7 +74,6 @@ export const getUser=  () => dispatch => {//get user's dashboard
 })
   .then(res => {
     console.log(res.data.username);
-    //setUser(res.data)
     dispatch({ type: FETCH_USER_SUCCESS, payload: res.data.username })
   })
   .catch(err =>
@@ -153,42 +152,6 @@ export const deleteSymptom = symptom => dispatch => {
 };
 
 
-//Get strain
-export const symptomSubmit = e => dispatch => {
-  e.preventDefault()
-dispatch({ type: GET_STRAIN_START })
-
-  axios.get(`https://medcab2.herokuapp.com/otherapis/strainmodel/${e.symValues}`, 
-      {
-          headers: {
-          'Authorization': `Bearer ${window.localStorage.getItem('token')}`
-          }
-      }
-      )
-      .then(res=> 
-        console.log(res),
-        dispatch({ type: GET_STRAIN_SUCCESS, payload: e.res })
-        )
-      .catch(err => 
-        console.log(err),
-        dispatch({ type: GET_STRAIN_ERROR, payload: e.err.response.message })
-        )
-}
-
-
-//Delete Strain
-export const deleteStrain = strain => dispatch => {
-  dispatch({ type: DELETE_STRAIN_START })
-  // make a delete request to delete this user
-  axiosWithAuth()
-    .delete(`url/${strain.id}`) 
-    .then(res => {
-      console.log('strain deleted', res)
-      dispatch({ type: DELETE_STRAIN_SUCCESS, payload: {} }) //paylod gives empty object
-    })
-    .catch(err => 
-      dispatch({ type: DELETE_STRAIN_ERROR, payload: 'There was an error deleting the strain' }))
-};
 
 
 

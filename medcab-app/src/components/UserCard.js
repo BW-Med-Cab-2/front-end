@@ -2,24 +2,20 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { StyleLink } from '../styles/styled';
-import { symptomSubmit, deleteStrain, getUser } from '../actions';
+import { getUser } from '../actions';
 
 
 const UserCard = (props) => {
-  const { user, getUser } = props
-  //let user = {}
-useEffect(() =>{
+  const { user, getUser, list } = props
  
+useEffect(() =>{
   getUser()
 }, []
 )
-console.log()
-const initialStrainState = {
-  strains: [],
-  isFetchingData: false,
-}
 
-console.log(user)
+console.log(props)
+
+
   // const handleFetch = e => {
   //   e.preventDefault();
   //   props.getUser();
@@ -33,14 +29,16 @@ console.log(user)
         <StyleLink to='/tempform'>Start Here</StyleLink>
       </div>
       <div>
-        suggested strains would be here
+        Internal server error is showing up
         <ul>
       <li> </li>
         </ul>
       </div>
       <div className='symptoms'>
         <p>(map over symptom resuslts)</p>
-        <ul>symptoms will show here</ul>
+        <ul>
+          <li>{list}</li>
+        </ul>
       <button> Change Symptoms</button>
       <button> Delete Symptoms</button>
     </div>
@@ -51,13 +49,13 @@ console.log(user)
 const mSTP = state => {
   return {
     user: state.userReducer.user,
-       strain: state.strainReducer.strain,
+       currentStrain: state.strainReducer.strain,
        symptom: state.symptomReducer.symptom,
     isFetchingData: state.isFetchingData
   }
 }
 
-export default connect(mSTP, { getUser, symptomSubmit, deleteStrain})(UserCard);
+export default connect(mSTP, { getUser })(UserCard);
 
 
 

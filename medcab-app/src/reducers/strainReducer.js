@@ -11,7 +11,7 @@ import {
 //initial state 
 
 const initialState = {
-  strain: {},
+  currentStrain: {},
   isFetchingData: false,
   isDeleting: false,
   isDeleted: false,
@@ -28,7 +28,7 @@ export const strainReducer = (state=initialState, action) => {
     case GET_STRAIN_SUCCESS:
       return {
           ...state,
-          strain: action.payload,
+          currentStrain: action.payload,
           isFetchingData: false,
         } 
     case GET_STRAIN_ERROR:
@@ -45,7 +45,7 @@ export const strainReducer = (state=initialState, action) => {
     case DELETE_STRAIN_SUCCESS:
       return {
         ...state, 
-        strain: action.payload,
+        currentStrain: action.payload,
         isDeleting: false,
         isDeleted: true
       }

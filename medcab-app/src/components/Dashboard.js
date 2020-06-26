@@ -5,14 +5,14 @@ import { Splash, StyleLink, StyleBtns, StyleP } from '../styles/styled'
 
 import UserCard from './UserCard';
 
-const Dashboard = () => {
+const Dashboard = (props) => {
     return (
         <div>
             
             <h1> Dashboard</h1>
             
 
-            < UserCard />
+            < UserCard list={props.symptoms} />
             
         </div>
     )
