@@ -28,7 +28,7 @@ const Login = props => {
                     <StyleP>{errors.username}</StyleP>
                     <StyleLabel>Password:&nbsp;
                         <StyleInput 
-                            type='text'
+                            type='password'
                             name='password'
                             value={login.password}
                             onChange={onInput}
