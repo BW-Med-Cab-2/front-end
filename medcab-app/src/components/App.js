@@ -17,6 +17,8 @@ import Questions from './Questions';
 
 import { connect } from 'react-redux';
 import { getUser, addUser, loginUser } from '../actions'
+import { axiosWithAuth } from '../utils/axiosWithAuth';
+import { GET_STRAIN_ERROR, UPDATE_USER_SUCCESS, UPDATE_USER_ERROR, UPDATE_USER_START } from '../actions/actionTypes';
 
 
 //////Initial Values//////
@@ -57,13 +59,12 @@ function App(props) {
                                 .map(symptom => symptom.value)
                                 .join(', ')
   //Questions handelers
-  const symptomSubmit = e => {
+  const symptomSubmit = e  => {
     e.preventDefault() //take sym values and put to a string
     // const symValues = symptoms.filter(symptom => symptom.value.length > 0)
     //                             .map(symptom => symptom.value)
     //                             .join(', ')
                                 console.log(symValues)
-                                console.log(window.localStorage.getItem('token'))
     //Get the resulting strain from endpoint - using my token and sym string
     axios.get(`https://medcab2.herokuapp.com/otherapis/strainmodel/${symValues}`, 
         {
@@ -72,11 +73,25 @@ function App(props) {
             }
         }
         )
-        .then(res => //give me this
+        .then(res => {//give me this
           //Server issue - Error 500 Internal Server Error (was working fine a couple of hours ago now it isn't)
           console.log(res.data.currentStrain.strain)
-
-        )
+          
+        //   return axiosWithAuth()
+        //   .post('/users/currentuser', {
+        //     headers: {//hey i am logged in and here is my token
+        //     'Authorization': `Bearer ${window.localStorage.getItem('token')}`
+        //     }
+        // })
+        //   .then(res =>{
+        //     console.log(res)
+        //     dispatch({ type: UPDATE_USER_SUCCESS, payload: res.data.currentStrain.strain  })
+        //   })
+        //   .catch(err => {
+        //     console.log(err.response.message)
+        //     dispatch({ type: UPDATE_USER_ERROR, payload: err.response.message })
+        //   })
+        })
         .catch(err => console.log(err))
         .finally(()=> setSymptoms(initialSymptoms))
 }

@@ -13,7 +13,7 @@ import {
 
 
 const initialState = {
-  symptoms: [],
+  symptoms: '',
   isFetchingData: false,
   isUpdating: false,
   isUpdated: false,

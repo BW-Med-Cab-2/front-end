@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 //ACTIONS 
 
-import { useEffect } from 'react'
+
 import { axiosWithAuth, axiosRegister } from '../utils/axiosWithAuth'
-import { useHistory } from 'react-router-dom'
+
 import { 
   LOGIN_USER_START,
   LOGIN_USER_SUCCESS,
@@ -14,33 +14,15 @@ import {
   FETCH_USER_START,
   FETCH_USER_ERROR,
   FETCH_USER_SUCCESS,
-  FETCH_SYMPTOM_START,
-  FETCH_SYMPTOM_ERROR,
-  FETCH_SYMPTOM_SUCCESS,
-  UPDATE_SYMPTOM_START,
-  UPDATE_SYMPTOM_ERROR,
-  UPDATE_SYMPTOM_SUCCESS,
-  DELETE_SYMPTOM_START,
-  DELETE_SYMPTOM_SUCCESS,
-  DELETE_SYMPTOM_ERROR,
   GET_STRAIN_START,
   GET_STRAIN_ERROR,
   GET_STRAIN_SUCCESS,
-  DELETE_STRAIN_START,
-  DELETE_STRAIN_ERROR,
-  DELETE_STRAIN_SUCCESS
+ 
    
 } from './actionTypes'
-import axios from 'axios'
 
 
-//temp username and password
-const tempuser= 'bmo'
-const password= 'boop'
 
-// const strainURL
-
-// const symptomURL
 
 //login stuff kind of works
 export const loginUser = props => dispatch => {
@@ -63,7 +45,7 @@ export const loginUser = props => dispatch => {
 }
 
 
-//Find the User Dashboard (kinda works) -- need to check token
+//Find the User Dashboard (WORKS) 
 export const getUser=  () => dispatch => {//get user's dashboard
   dispatch({ type: FETCH_USER_START });
   axiosWithAuth()
@@ -96,62 +78,20 @@ export const addUser = (newUser) => dispatch => {
     })
 };
 
-//get symptoms
-
-export const getSymptoms = () => dispatch => {
-  dispatch({ type: FETCH_SYMPTOM_START })
-  axios
-    .get('url')
-    .then(res => {
-      console.log(res.data); //see what axios call result is then change payload
-    dispatch({//good
-      type: FETCH_SYMPTOM_SUCCESS, payload: res.data })
-    })
-    .catch (err => {
-      console.log(err.response.message)
-      dispatch({
-        type: FETCH_SYMPTOM_ERROR,
-        payload: err.response.message //do for all
-      })
-    })
-};
-
-//UPDATE Symptom
-export const updateSymptom = (symptom) => dispatch => { 
- 
-useEffect(() => {
-  dispatch({ type: UPDATE_SYMPTOM_START })
+export const getStrain=  () => dispatch => {//get strain DONE!
+  dispatch({ type: GET_STRAIN_START });
   axiosWithAuth()
-  .put(`url`) //update symptoms
-  .then((res) => {
-    console.log(res);
-    dispatch({ type: UPDATE_SYMPTOM_SUCCESS, payload: res.data })
-    //setSymptomUpdate(res.data) //
+  .get(`/users/currentuser`,  {
+    headers: {
+    'Authorization': `Bearer ${window.localStorage.getItem('token')}`
+    }
+})
+  .then(res => {
+    console.log(res.data.currentStrain.strain);
+    dispatch({ type: GET_STRAIN_SUCCESS, payload: res.data.currentStrain.strain })
   })
-  .catch(err => {
-    dispatch({ type: UPDATE_SYMPTOM_ERROR, payload: 'There was an error updating the symptom' })
-  })
-})//may need id in dependancy array
+  .catch(err =>
+    console.log(err.response.message),
+    dispatch({ type: GET_STRAIN_ERROR, payload: 'There was an error finding the user' }))
 };
-
-//DELETE Symptom
-
-export const deleteSymptom = symptom => dispatch => {
-  const {push} = useHistory ();
-  dispatch({ type: DELETE_SYMPTOM_START })
-  // make a delete request to delete this user
-  axiosWithAuth()
-    .delete(`url${symptom.id}`) //
-    .then(res => {
-      console.log('symptom deleted', res)
-      dispatch({ type: DELETE_SYMPTOM_SUCCESS, payload: {} }) //paylod gives empty object
-      push('/dashboard') //push to the dashboard page
-    })
-    .catch(err => 
-      dispatch({ type: DELETE_SYMPTOM_ERROR, payload: 'There was an error deleting the symptom' }))
-};
-
-
-
-
 

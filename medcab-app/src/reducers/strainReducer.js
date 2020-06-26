@@ -11,7 +11,7 @@ import {
 //initial state 
 
 const initialState = {
-  currentStrain: {},
+  currentStrain: '',
   isFetchingData: false,
   isDeleting: false,
   isDeleted: false,

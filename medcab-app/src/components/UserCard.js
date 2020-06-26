@@ -2,18 +2,25 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { StyleLink } from '../styles/styled';
-import { getUser } from '../actions';
+import { getUser, getStrain } from '../actions';
 
 
 const UserCard = (props) => {
-  const { user, getUser, list } = props
+  const { user, getUser, list, getStrain, currentStrain } = props
  
 useEffect(() =>{
   getUser()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []
 )
 
+useEffect(() =>{
+  getStrain()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []
+)
 console.log(props)
+console.log(getStrain)
 
 
   // const handleFetch = e => {
@@ -29,9 +36,9 @@ console.log(props)
         <StyleLink to='/tempform'>Start Here</StyleLink>
       </div>
       <div>
-        Internal server error is showing up
+        <h2>Recommended Strain: </h2>
         <ul>
-      <li> </li>
+      <li> {currentStrain} </li>
         </ul>
       </div>
       <div className='symptoms'>
@@ -49,13 +56,13 @@ console.log(props)
 const mSTP = state => {
   return {
     user: state.userReducer.user,
-       currentStrain: state.strainReducer.strain,
+       currentStrain: state.strainReducer.currentStrain,
        symptom: state.symptomReducer.symptom,
     isFetchingData: state.isFetchingData
   }
 }
 
-export default connect(mSTP, { getUser })(UserCard);
+export default connect(mSTP, { getUser, getStrain })(UserCard);
 
 
 

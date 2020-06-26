@@ -9,13 +9,16 @@ import {
   ADD_USER_START,
   ADD_USER_SUCCESS,
   ADD_USER_ERROR,
+  UPDATE_USER_START,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_ERROR
 } from '../actions/actionTypes'
 
 //initial state 
 
 const initialState = {
   user: '',
-  currentStrain: {},
+  currentStrain: '',
   isLoggingIn: false,
   isLoggedIn: false,
   isFetchingData: false,
@@ -83,6 +86,22 @@ export const userReducer = (state=initialState, action) => {
           error: action.payload,
           isAdded: false
         }
+        case UPDATE_USER_START:
+          return {
+            ...state
+          }
+        case UPDATE_USER_SUCCESS:
+          return {
+              ...state,
+              user: action.payload,
+              isUpdated: true,
+            }
+        case UPDATE_USER_ERROR:
+          return {
+              ...state,
+              error: action.payload,
+              isUpdated: false
+            }
     default:
       return state;
   }
