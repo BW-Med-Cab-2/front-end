@@ -2,68 +2,42 @@
 //ACTIONS 
 
 
-import { useEffect } from 'react'
-import { axiosWithAuth } from '../utils/axiosWithAuth'
-import { useHistory } from 'react-router-dom'
+import { axiosWithAuth, axiosRegister } from '../utils/axiosWithAuth'
 
-//Login .get
-export const LOGIN_USER_START = 'LOGIN_USER_START'; 
-export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS'; 
-export const LOGIN_USER_ERROR = 'LOGIN_USER_ERROR'; 
-
-//Fetch user .get
-export const FETCH_USER_START = 'FETCH_USER_START'; 
-export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS'; 
-export const FETCH_USER_ERROR = 'FETCH_USER_ERROR'; 
-
-//Add user .post
-export const ADD_USER_START = 'ADD_USER_START'; 
-export const ADD_USER_SUCCESS = 'ADD_USER_SUCCESS'; 
-export const ADD_USER_ERROR = 'ADD_USER-ERROR'; 
-
-//Update user .put
-export const UPDATE_USER_START = 'UPDATE_USER_START'; 
-export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS'; 
-export const UPDATE_USER_ERROR = 'UPDATE_USER_ERROR'; 
-
-// delete user .delete
-export const DELETE_USER_START = 'DELETE_USER_START'; 
-export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS'; 
-export const DELETE_USER_ERROR = 'DELETE_USER_ERROR'; 
+import { 
+  LOGIN_USER_START,
+  LOGIN_USER_SUCCESS,
+  LOGIN_USER_ERROR,
+  ADD_USER_START,
+  ADD_USER_ERROR,
+  ADD_USER_SUCCESS,
+  FETCH_USER_START,
+  FETCH_USER_ERROR,
+  FETCH_USER_SUCCESS,
+  GET_STRAIN_START,
+  GET_STRAIN_ERROR,
+  GET_STRAIN_SUCCESS,
+ 
+   
+} from './actionTypes'
 
 
 
 
-
-const initialLogin = {
-  username:'',
-  password:''
-}
-
-const tempUser= 'tempuser'
-const tempPass= 'password'
-
-
-
-//login stuff
-export const loginUser = () => dispatch => {
- //401 error
+//login stuff kind of works
+export const loginUser = props => dispatch => {
+ 
 
   dispatch({ type: LOGIN_USER_START })
     //////temps will be placed with userCheck props//////
     axiosWithAuth()
-    .post('/login', `grant_type=password&username=tempuser&password=password`, {
-      headers: {
-        // btoa is converting our client id/client secret into base64
-        Authorization: `Basic ${btoa('lambda-client:lambda-secret')}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
+    .post('/login', `grant_type=password&username=${props.username}&password=${props.password}`, {
     })
       .then(res => {
         console.log(res.data)
         localStorage.setItem('token', res.data.access_token)
-        this.props.history.push('/users')
-        dispatch({ type: LOGIN_USER_SUCCESS }) //payload: res.data ???
+        this.props.history.push('/')
+        dispatch({ type: LOGIN_USER_SUCCESS }) //what payload??
       })
       .catch(err => 
         dispatch({ type: LOGIN_USER_ERROR, payload: 'There was an error loggin in the user'  }))
@@ -71,24 +45,28 @@ export const loginUser = () => dispatch => {
 }
 
 
-//Find the User Dashboard
-export const getUser= (user) => dispatch => {//get user's dashboard
+//Find the User Dashboard (WORKS) 
+export const getUser=  () => dispatch => {//get user's dashboard
   dispatch({ type: FETCH_USER_START });
   axiosWithAuth()
-  .get(`/users/${user}`)
+  .get(`/users/currentuser`,  {
+    headers: {
+    'Authorization': `Bearer ${window.localStorage.getItem('token')}`
+    }
+})
   .then(res => {
-    console.log(res.data);
-    //setUser(res.data)
-    dispatch({ type: FETCH_USER_SUCCESS, payload: res.data })
+    console.log(res.data.username);
+    dispatch({ type: FETCH_USER_SUCCESS, payload: res.data.username })
   })
   .catch(err =>
+    console.log(err.response.message),
     dispatch({ type: FETCH_USER_ERROR, payload: 'There was an error finding the user' }))
 };
 
 //ADD USER (Create a new user) WORKS!!!
 export const addUser = (newUser) => dispatch => {
   dispatch({ type: ADD_USER_START });
-  axiosWithAuth()
+  axiosRegister()
   .post('/createnewuser', newUser)
     .then(response => {
       debugger
@@ -100,38 +78,20 @@ export const addUser = (newUser) => dispatch => {
     })
 };
 
-//UPDATE User
-
-export const updateUser = (user) => dispatch => { 
-  //const [ userUpdate, setUserUpdate ] =  useState(initialUserForm) //set initial user values up top
-useEffect(() => {
-  dispatch({ type: UPDATE_USER_START })
+export const getStrain=  () => dispatch => {//get strain DONE!
+  dispatch({ type: GET_STRAIN_START });
   axiosWithAuth()
-  .put(`/users/${user.id}`) //
-  .then((res) => {
-    console.log(res);
-    dispatch({ type: UPDATE_USER_SUCCESS, payload: res.data })
-    //setUserUpdate(res.data) //
+  .get(`/users/currentuser`,  {
+    headers: {
+    'Authorization': `Bearer ${window.localStorage.getItem('token')}`
+    }
+})
+  .then(res => {
+    console.log(res.data.currentStrain.strain);
+    dispatch({ type: GET_STRAIN_SUCCESS, payload: res.data.currentStrain.strain })
   })
-  .catch(err => {
-    dispatch({ type: UPDATE_USER_ERROR, payload: 'There was an error updating the user' })
-  })
-})//may need id in dependancy array
+  .catch(err =>
+    console.log(err),
+    dispatch({ type: GET_STRAIN_ERROR, payload: 'There was an error finding the user' }))
 };
 
-//DELETE User
-
-export const deleteUser = user => dispatch => {
-  const {push} = useHistory ();
-  dispatch({ type: DELETE_USER_START })
-  // make a delete request to delete this user
-  axiosWithAuth()
-    .delete(`/users/${user.id}`) //user or setUser or setEditUser ???
-    .then(res => {
-      console.log('user deleted', res)
-      dispatch({ type: DELETE_USER_SUCCESS, payload: {} }) //paylod gives empty object
-      push('/') //push to the main page
-    })
-    .catch(err => 
-      dispatch({ type: DELETE_USER_ERROR, payload: 'There was an error deleting the user' }))
-};

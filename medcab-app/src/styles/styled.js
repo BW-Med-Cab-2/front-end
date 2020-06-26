@@ -141,6 +141,7 @@ export const StyleBtns = styled.button`
     }
 `
 
+
 //style the Links not in Navbar
 export const StyleLink = styled(Link)`
   text-decoration: none;

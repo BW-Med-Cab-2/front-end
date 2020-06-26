@@ -18,6 +18,8 @@ import Questions from './Questions';
 import { connect } from 'react-redux';
 import { getUser, addUser, loginUser } from '../actions'
 import { axiosWithAuth } from '../utils/axiosWithAuth';
+import { GET_STRAIN_ERROR, UPDATE_USER_SUCCESS, UPDATE_USER_ERROR, UPDATE_USER_START } from '../actions/actionTypes';
+
 
 //////Initial Values//////
 const initialLogin = {
@@ -36,15 +38,72 @@ const initialErrors = {
 }
 const initialDisable = true
 
-const tempUser= 'tempuser'
-const tempPass= 'password'
+const initialSymptoms= [
+  {name:'Symptom 1',value:''},
+  {name:'Symptom 2',value:''},
+  {name:'Symptom 3',value:''},
+  {name:'Symptom 4',value:''},
+  {name:'Symptom 5',value:''}
+]
+
+
 function App(props) {
   //////Use States//////
   const [ login, setLogin ] = useState(initialLogin)
   const [ register, setRegister ] = useState(initialRegister)
   const [ disable, setDisable ] = useState(initialDisable)
   const [ errors, setErrors ] = useState(initialErrors)
-  const [users, setUsers] = useState() //user state
+  const [ symptoms, setSymptoms ] = useState(initialSymptoms)
+  const [ dashboard, setDashboard ] = useState({})
+  const symValues = symptoms.filter(symptom => symptom.value.length > 0)
+                                .map(symptom => symptom.value)
+                                .join(', ')
+  //Questions handelers
+  const symptomSubmit = e  => {
+    e.preventDefault() //take sym values and put to a string
+    // const symValues = symptoms.filter(symptom => symptom.value.length > 0)
+    //                             .map(symptom => symptom.value)
+    //                             .join(', ')
+                                console.log(symValues)
+    //Get the resulting strain from endpoint - using my token and sym string
+    axios.get(`https://medcab2.herokuapp.com/otherapis/strainmodel/${symValues}`, 
+        {
+            headers: {//hey i am logged in and here is my token
+            'Authorization': `Bearer ${window.localStorage.getItem('token')}`
+            }
+        }
+        )
+        .then(res => {//give me this
+          //Server issue - Error 500 Internal Server Error (was working fine a couple of hours ago now it isn't)
+          console.log(res.data.currentStrain.strain)
+          
+        //   return axiosWithAuth()
+        //   .post('/users/currentuser', {
+        //     headers: {//hey i am logged in and here is my token
+        //     'Authorization': `Bearer ${window.localStorage.getItem('token')}`
+        //     }
+        // })
+        //   .then(res =>{
+        //     console.log(res)
+        //     dispatch({ type: UPDATE_USER_SUCCESS, payload: res.data.currentStrain.strain  })
+        //   })
+        //   .catch(err => {
+        //     console.log(err.response.message)
+        //     dispatch({ type: UPDATE_USER_ERROR, payload: err.response.message })
+        //   })
+        })
+        .catch(err => console.log(err))
+        .finally(()=> setSymptoms(initialSymptoms))
+}
+
+  const symptomHandler = e => {
+    const {name, value} = e.target
+    const symptomIndex = symptoms.findIndex(element => element.name === name )
+    let updatedSymptoms = [...symptoms]
+    updatedSymptoms[symptomIndex] = {...updatedSymptoms[symptomIndex], value: value}
+    setSymptoms(updatedSymptoms)
+  } 
+
 
   //////Login Handlers//////
   const loginHandler = e => {
@@ -78,28 +137,10 @@ function App(props) {
       password: login.password.trim()
     }
 
-    props.loginUser()
+    props.loginUser(userCheck)
      
     setLogin(initialLogin)
-      
-    //                             //////temps will be placed with userCheck props//////
-    // axiosWithAuth()
-    // .post('/login', `grant_type=password&username=${tempUser}&password=${tempPass}`, {
-    //   headers: {
-    //     // btoa is converting our client id/client secret into base64
-    //     Authorization: `Basic ${btoa('lambda-client:lambda-secret')}`,
-    //     'Content-Type': 'application/x-www-form-urlencoded'
-    //   }
-    // })
-    //   .then(res => {
-    //     console.log(res.data.access_token)
-    //     localStorage.setItem('token', res.data.access_token)
-    //     this.props.history.push('/users')
-    //   })
-    //   .catch(err => console.dir(err))
-    //   .finally(() => {
-    //     setLogin(initialLogin)
-    //   })
+
   }
 
   //////Registration Handlers//////
@@ -136,19 +177,7 @@ function App(props) {
 
     props.addUser(newUser)
     setRegister(initialRegister)
-// add a new User (Register)
-    // axiosWithAuth()
-    // .post('/createnewuser', newUser)
-    //   .then(response => {
-    //     debugger
-    //     console.log(response)
-    //   })
-    //   .catch(error => {
-    //     console.log(error)
-    //   })
-    //   .finally(() => {
-    //     setRegister(initialRegister)
-    //   })
+
   }
 
   //////UseEffects for Login and Register//////
@@ -167,8 +196,13 @@ function App(props) {
     <ContainerDiv>
       <AppNav />
       <Switch>
-        <Route path='/protected' component={Dashboard} >
-        </Route>
+        
+      <Route exact path="/protected"> 
+          <Dashboard 
+          symptoms={symValues}
+          
+          />
+      </Route>
 
         <Route path='/login'>
           <Login
@@ -192,10 +226,14 @@ function App(props) {
         </Route>
 
         <Route path='/tempform'>
-          <Questions />
+          <Questions 
+            onInput={symptomHandler}
+            onSubmit={symptomSubmit}
+            symptoms={symptoms}
+          />
         </Route>
 
-        <Route path='/'>
+        <Route exact path='/'>
           <Home />
         </Route>
       </Switch>

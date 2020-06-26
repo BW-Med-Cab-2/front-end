@@ -1,13 +1,28 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react';
-//import { connect } from 'react-redux';
-//import { updateUser, deleteUser } from '../actions';
+import { connect } from 'react-redux';
+import { NavbarLink, StyleP, FormHeading, StyleBtns } from '../styles/styled';
+import { getUser, getStrain } from '../actions';
+
 
 const UserCard = (props) => {
-useEffect((props) =>{
-  props.getUser()
+  const { user, getUser, getStrain, currentStrain } = props
+ 
+useEffect(() =>{
+  getUser()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []
 )
-console.log(props.user)
+
+useEffect(() =>{
+  getStrain()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []
+)
+console.log(props)
+console.log(getStrain)
+
+
   // const handleFetch = e => {
   //   e.preventDefault();
   //   props.getUser();
@@ -15,31 +30,31 @@ console.log(props.user)
 
   return (
     <div>
+      <FormHeading> Welcome {user}</FormHeading>
+      <div> 
+        <StyleP>Tell us your symptoms and we will offer a suggestion.</StyleP>
+        <StyleBtns><NavbarLink to='/tempform'>Start Here</NavbarLink></StyleBtns>
+      </div>
       <div>
-        {props.users.map(user => {
-          return (
-            <div key={user.id}>
-              <h2> {user.name} </h2>
-           <p> other info I haven't decided on yet</p>
-            </div>
-          )
-        })}
+        <FormHeading>Recommended Strain: </FormHeading>
+        
+      <StyleP> {currentStrain} </StyleP>
         
       </div>
-      <button> Update User Profile</button>
-      <button> Delete User Profile</button>
     </div>
   )
 };
-// const mSTP = state => {
-//   return {
-//     users: state.users,
-//     isFetchingData: state.isFetchingData
-//   }
-// }
+const mSTP = state => {
+  return {
+    user: state.userReducer.user,
+       currentStrain: state.strainReducer.currentStrain,
+       symptom: state.symptomReducer.symptom,
+    isFetchingData: state.isFetchingData
+  }
+}
 
-// export default connect(mSTP, {updateUser, deleteUser})(UserCard);
+export default connect(mSTP, { getUser, getStrain })(UserCard);
 
-export default UserCard;
+
 
 
