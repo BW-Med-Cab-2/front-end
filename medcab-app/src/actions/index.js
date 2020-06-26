@@ -64,15 +64,18 @@ export const loginUser = props => dispatch => {
 
 
 //Find the User Dashboard (kinda works) -- need to check token
-export const getUser= () => dispatch => {//get user's dashboard
+export const getUser=  () => dispatch => {//get user's dashboard
   dispatch({ type: FETCH_USER_START });
-  
   axiosWithAuth()
-  .get(`/users/currentuser`)
+  .get(`/users/currentuser`,  {
+    headers: {
+    'Authorization': `Bearer ${window.localStorage.getItem('token')}`
+    }
+})
   .then(res => {
-    console.log(res.data);
+    console.log(res.data.username);
     //setUser(res.data)
-    dispatch({ type: FETCH_USER_SUCCESS, payload: res.data })
+    dispatch({ type: FETCH_USER_SUCCESS, payload: res.data.username })
   })
   .catch(err =>
     console.log(err.response.message),

@@ -4,18 +4,22 @@ import { connect } from 'react-redux';
 import { StyleLink } from '../styles/styled';
 import { symptomSubmit, deleteStrain, getUser } from '../actions';
 
+
 const UserCard = (props) => {
-useEffect((props) =>{
+  const { user, getUser } = props
+  //let user = {}
+useEffect(() =>{
+ 
   getUser()
 }, []
 )
-
+console.log()
 const initialStrainState = {
   strains: [],
   isFetchingData: false,
 }
 
-console.log(props)
+console.log(user)
   // const handleFetch = e => {
   //   e.preventDefault();
   //   props.getUser();
@@ -23,7 +27,7 @@ console.log(props)
 
   return (
     <div>
-      <h2> Welcome {props.username}</h2>
+      <h2> Welcome {user}</h2>
       <div> 
         <p>Tell us your symptoms and we will offer a suggestion.</p>
         <StyleLink to='/tempform'>Start Here</StyleLink>
@@ -44,16 +48,16 @@ console.log(props)
     </div>
   )
 };
-// const mSTP = state => {
-//   return {
-//     user: state.userReducer.user,
-//        strain: state.strainReducer.strain,
-//        symptom: state.symptomReducer.symptom,
-//     isFetchingData: state.isFetchingData
-//   }
-// }
+const mSTP = state => {
+  return {
+    user: state.userReducer.user,
+       strain: state.strainReducer.strain,
+       symptom: state.symptomReducer.symptom,
+    isFetchingData: state.isFetchingData
+  }
+}
 
-export default connect(null, { getUser, symptomSubmit, deleteStrain})(UserCard);
+export default connect(mSTP, { getUser, symptomSubmit, deleteStrain})(UserCard);
 
 
 
