@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { getStrain, deleteStrain, getUser } from '../actions';
+import { StyleLink } from '../styles/styled';
+import { symptomSubmit, deleteStrain, getUser } from '../actions';
 
 const UserCard = (props) => {
 useEffect((props) =>{
@@ -13,23 +15,23 @@ const initialStrainState = {
   isFetchingData: false,
 }
 
-console.log(props.user)
+console.log(props)
   // const handleFetch = e => {
   //   e.preventDefault();
   //   props.getUser();
   // };
 
   return (
-    <div className='userDashboard'>
-      <h2> Welcome {props.user}</h2>
-      <div className='questions'> 
+    <div>
+      <h2> Welcome {props.username}</h2>
+      <div> 
         <p>Tell us your symptoms and we will offer a suggestion.</p>
-        <button>Start Here</button>
+        <StyleLink to='/tempform'>Start Here</StyleLink>
       </div>
-      <div className='suggested'>
+      <div>
         suggested strains would be here
         <ul>
-      <li> strains will show here</li>
+      <li> </li>
         </ul>
       </div>
       <div className='symptoms'>
@@ -44,13 +46,14 @@ console.log(props.user)
 };
 // const mSTP = state => {
 //   return {
-//     user: state.user,
-//        strain: state.strain,
+//     user: state.userReducer.user,
+//        strain: state.strainReducer.strain,
+//        symptom: state.symptomReducer.symptom,
 //     isFetchingData: state.isFetchingData
 //   }
 // }
 
-export default connect(null, { getUser, getStrain, deleteStrain})(UserCard);
+export default connect(null, { getUser, symptomSubmit, deleteStrain})(UserCard);
 
 
 

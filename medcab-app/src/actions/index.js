@@ -2,7 +2,7 @@
 //ACTIONS 
 
 import { useEffect } from 'react'
-import { axiosWithAuth } from '../utils/axiosWithAuth'
+import { axiosWithAuth, axiosRegister } from '../utils/axiosWithAuth'
 import { useHistory } from 'react-router-dom'
 import { 
   LOGIN_USER_START,
@@ -35,34 +35,26 @@ import axios from 'axios'
 
 
 //temp username and password
-const tempUser= 'tempuser'
-const tempPass= 'password'
+const tempuser= 'bmo'
+const password= 'boop'
 
 // const strainURL
 
 // const symptomURL
 
 //login stuff kind of works
-export const loginUser = () => dispatch => {
- //401 error
+export const loginUser = props => dispatch => {
+ 
 
   dispatch({ type: LOGIN_USER_START })
     //////temps will be placed with userCheck props//////
     axiosWithAuth()
-
-
-    .post('/login', `grant_type=password&username=tempuser&password=password`, {
-
-      headers: {
-        // btoa is converting our client id/client secret into base64
-        Authorization: `Basic ${btoa('lambda-client:lambda-secret')}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
+    .post('/login', `grant_type=password&username=${props.username}&password=${props.password}`, {
     })
       .then(res => {
         console.log(res.data)
         localStorage.setItem('token', res.data.access_token)
-        this.props.history.push('/users')
+        this.props.history.push('/protected')
         dispatch({ type: LOGIN_USER_SUCCESS }) //payload: res.data ???
       })
       .catch(err => 
@@ -72,11 +64,11 @@ export const loginUser = () => dispatch => {
 
 
 //Find the User Dashboard (kinda works) -- need to check token
-export const getUser= (user) => dispatch => {//get user's dashboard
+export const getUser= () => dispatch => {//get user's dashboard
   dispatch({ type: FETCH_USER_START });
   
   axiosWithAuth()
-  .get(`/users/${user}`)
+  .get(`/users/currentuser`)
   .then(res => {
     console.log(res.data);
     //setUser(res.data)
@@ -90,7 +82,7 @@ export const getUser= (user) => dispatch => {//get user's dashboard
 //ADD USER (Create a new user) WORKS!!!
 export const addUser = (newUser) => dispatch => {
   dispatch({ type: ADD_USER_START });
-  axiosWithAuth()
+  axiosRegister()
   .post('/createnewuser', newUser)
     .then(response => {
       debugger
@@ -109,15 +101,15 @@ export const getSymptoms = () => dispatch => {
   axios
     .get('url')
     .then(res => {
-      console.log(res.data);
-    dispatch({
+      console.log(res.data); //see what axios call result is then change payload
+    dispatch({//good
       type: FETCH_SYMPTOM_SUCCESS, payload: res.data })
     })
     .catch (err => {
       console.log(err.response.message)
       dispatch({
         type: FETCH_SYMPTOM_ERROR,
-        payload: 'There was an error finding your symptoms'
+        payload: err.response.message //do for all
       })
     })
 };
@@ -159,18 +151,26 @@ export const deleteSymptom = symptom => dispatch => {
 
 
 //Get strain
-export const getStrain= () => dispatch => {//get strain
-  dispatch({ type: GET_STRAIN_START })
-  const res = axios.get(`https://med-cab-1415.herokuapp.com/toptenrating`) //using top ten now change when have correct endpoint
-  .then(res => {
-    console.log(res.data);
-    //setStrain(res.data)
-    dispatch({ type: GET_STRAIN_SUCCESS, payload: res.data })
-  })
-  .catch(err =>
-    console.log(err.response.message),
-    dispatch({ type: GET_STRAIN_ERROR, payload: 'There was an error finding the strain' }))
-};
+export const symptomSubmit = e => dispatch => {
+  e.preventDefault()
+dispatch({ type: GET_STRAIN_START })
+
+  axios.get(`https://medcab2.herokuapp.com/otherapis/strainmodel/${e.symValues}`, 
+      {
+          headers: {
+          'Authorization': `Bearer ${window.localStorage.getItem('token')}`
+          }
+      }
+      )
+      .then(res=> 
+        console.log(res),
+        dispatch({ type: GET_STRAIN_SUCCESS, payload: e.res })
+        )
+      .catch(err => 
+        console.log(err),
+        dispatch({ type: GET_STRAIN_ERROR, payload: e.err.response.message })
+        )
+}
 
 
 //Delete Strain

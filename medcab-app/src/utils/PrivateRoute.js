@@ -1,3 +1,7 @@
+//Creates protected route for friends list
+//remembers if logged in or not
+//navigating to this route will redirect to login page
+
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
@@ -8,7 +12,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
       if (token) {
         return <Component {...props} />
       } else {
-        return <Redirect to='/login' />;
+        return <Redirect to='/' />;
       }
     }} />
   )

@@ -17,7 +17,7 @@ import Questions from './Questions';
 
 import { connect } from 'react-redux';
 import { getUser, addUser, loginUser } from '../actions'
-import { axiosWithAuth } from '../utils/axiosWithAuth';
+
 
 //////Initial Values//////
 const initialLogin = {
@@ -36,15 +36,55 @@ const initialErrors = {
 }
 const initialDisable = true
 
-const tempUser= 'tempuser'
-const tempPass= 'password'
+const initialSymptoms= [
+  {name:'Symptom 1',value:''},
+  {name:'Symptom 2',value:''},
+  {name:'Symptom 3',value:''},
+  {name:'Symptom 4',value:''},
+  {name:'Symptom 5',value:''}
+]
+
+
 function App(props) {
   //////Use States//////
   const [ login, setLogin ] = useState(initialLogin)
   const [ register, setRegister ] = useState(initialRegister)
   const [ disable, setDisable ] = useState(initialDisable)
   const [ errors, setErrors ] = useState(initialErrors)
-  const [users, setUsers] = useState() //user state
+  const [ symptoms, setSymptoms ] = useState(initialSymptoms)
+  const [ dashboard, setDashboard ] = useState({})
+  //Questions handelers
+  const symptomSubmit = e => {
+    e.preventDefault()
+    const symValues = symptoms.filter(symptom => symptom.value.length > 0)
+                                .map(symptom => symptom.value)
+                                .join(', ')
+    //Get the resulting strain from endpoint
+    axios.get(`https://medcab2.herokuapp.com/otherapis/strainmodel/${symValues}`, 
+        {
+            headers: {
+            'Authorization': `Bearer ${window.localStorage.getItem('token')}`
+            }
+        }
+        )
+        .then(res => 
+          //we need to fix this because it is being dumb
+          setDashboard(res.data.currentStrain),
+          console.log(dashboard)
+
+        )
+        .catch(err => console.log(err))
+        .finally(()=> setSymptoms(initialSymptoms))
+}
+
+  const symptomHandler = e => {
+    const {name, value} = e.target
+    const symptomIndex = symptoms.findIndex(element => element.name === name )
+    let updatedSymptoms = [...symptoms]
+    updatedSymptoms[symptomIndex] = {...updatedSymptoms[symptomIndex], value: value}
+    setSymptoms(updatedSymptoms)
+  } 
+
 
   //////Login Handlers//////
   const loginHandler = e => {
@@ -78,28 +118,10 @@ function App(props) {
       password: login.password.trim()
     }
 
-    props.loginUser()
+    props.loginUser(userCheck)
      
     setLogin(initialLogin)
-      
-    //                             //////temps will be placed with userCheck props//////
-    // axiosWithAuth()
-    // .post('/login', `grant_type=password&username=${tempUser}&password=${tempPass}`, {
-    //   headers: {
-    //     // btoa is converting our client id/client secret into base64
-    //     Authorization: `Basic ${btoa('lambda-client:lambda-secret')}`,
-    //     'Content-Type': 'application/x-www-form-urlencoded'
-    //   }
-    // })
-    //   .then(res => {
-    //     console.log(res.data.access_token)
-    //     localStorage.setItem('token', res.data.access_token)
-    //     this.props.history.push('/users')
-    //   })
-    //   .catch(err => console.dir(err))
-    //   .finally(() => {
-    //     setLogin(initialLogin)
-    //   })
+
   }
 
   //////Registration Handlers//////
@@ -136,19 +158,7 @@ function App(props) {
 
     props.addUser(newUser)
     setRegister(initialRegister)
-// add a new User (Register)
-    // axiosWithAuth()
-    // .post('/createnewuser', newUser)
-    //   .then(response => {
-    //     debugger
-    //     console.log(response)
-    //   })
-    //   .catch(error => {
-    //     console.log(error)
-    //   })
-    //   .finally(() => {
-    //     setRegister(initialRegister)
-    //   })
+
   }
 
   //////UseEffects for Login and Register//////
@@ -167,9 +177,8 @@ function App(props) {
     <ContainerDiv>
       <AppNav />
       <Switch>
-        {/* //add protected again after dashboard and api is built */}
-        <Route path='/dashboard' component={Dashboard} > 
-        </Route>
+        
+      <Route exact path="/protected" component={Dashboard} /> 
 
         <Route path='/login'>
           <Login
@@ -193,10 +202,14 @@ function App(props) {
         </Route>
 
         <Route path='/tempform'>
-          <Questions />
+          <Questions 
+            onInput={symptomHandler}
+            onSubmit={symptomSubmit}
+            symptoms={symptoms}
+          />
         </Route>
 
-        <Route path='/'>
+        <Route exact path='/'>
           <Home />
         </Route>
       </Switch>
