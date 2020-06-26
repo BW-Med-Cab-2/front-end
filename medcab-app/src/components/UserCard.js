@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { StyleLink } from '../styles/styled';
+import { NavbarLink, StyleP, FormHeading, StyleBtns } from '../styles/styled';
 import { getUser, getStrain } from '../actions';
 
 
 const UserCard = (props) => {
-  const { user, getUser, list, getStrain, currentStrain } = props
+  const { user, getUser, getStrain, currentStrain } = props
  
 useEffect(() =>{
   getUser()
@@ -30,26 +30,17 @@ console.log(getStrain)
 
   return (
     <div>
-      <h2> Welcome {user}</h2>
+      <FormHeading> Welcome {user}</FormHeading>
       <div> 
-        <p>Tell us your symptoms and we will offer a suggestion.</p>
-        <StyleLink to='/tempform'>Start Here</StyleLink>
+        <StyleP>Tell us your symptoms and we will offer a suggestion.</StyleP>
+        <StyleBtns><NavbarLink to='/tempform'>Start Here</NavbarLink></StyleBtns>
       </div>
       <div>
-        <h2>Recommended Strain: </h2>
-        <ul>
-      <li> {currentStrain} </li>
-        </ul>
+        <FormHeading>Recommended Strain: </FormHeading>
+        
+      <StyleP> {currentStrain} </StyleP>
+        
       </div>
-      <div className='symptoms'>
-        <p>(map over symptom resuslts)</p>
-        <ul>
-          <li>{list}</li>
-        </ul>
-      <button> Change Symptoms</button>
-      <button> Delete Symptoms</button>
-    </div>
-     
     </div>
   )
 };

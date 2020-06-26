@@ -19,6 +19,10 @@ const AppNav = () => {
                 <NavbarLi>
                     <NavbarLink to='/register'>Register</NavbarLink>
                 </NavbarLi>
+
+                <NavbarLi>
+                    <NavbarLink to="/protected">Dashboard</NavbarLink>
+                </NavbarLi>
             </NavbarUl>
         </NavbarDiv>
     )

@@ -1,20 +1,20 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import { Splash, StyleLink, StyleBtns, StyleP } from '../styles/styled'
+import { Splash, StyleLink, StyleBtns, StyleP, FormHeading, ContainerDiv } from '../styles/styled'
 
 
 import UserCard from './UserCard';
 
 const Dashboard = (props) => {
     return (
-        <div>
+        <ContainerDiv>
             
-            <h1> Dashboard</h1>
+            <FormHeading> Dashboard</FormHeading>
             
 
             < UserCard list={props.symptoms} />
             
-        </div>
+        </ContainerDiv>
     )
 }
 
