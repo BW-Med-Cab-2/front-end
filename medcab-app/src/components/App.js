@@ -14,6 +14,7 @@ import loginSchema from '../validation/loginSchema'
 import registerSchema from '../validation/registerSchema'
 import Dashboard from './Dashboard'
 import Questions from './Questions';
+import PrivateRoute from '../utils/PrivateRoute'
 
 import { connect } from 'react-redux';
 import { getUser, addUser, loginUser } from '../actions'
@@ -197,14 +198,14 @@ function App(props) {
       <AppNav />
       <Switch>
         
-      <Route exact path="/protected"> 
+      <PrivateRoute exact path="/protected"> 
           <Dashboard 
           symptoms={symValues}
           
           />
-      </Route>
+      </PrivateRoute>
 
-        <Route path='/login'>
+        <Route exact path='/login'>
           <Login
             component={Login}
             onInput={loginHandler}
@@ -215,7 +216,7 @@ function App(props) {
             />
         </Route>
 
-        <Route path='/register'>
+        <Route exact path='/register'>
           <Register
           component={Register}
           onInput={registerHandler}
@@ -225,7 +226,7 @@ function App(props) {
           errors={errors} />
         </Route>
 
-        <Route path='/tempform'>
+        <Route exact path='/tempform'>
           <Questions 
             onInput={symptomHandler}
             onSubmit={symptomSubmit}
