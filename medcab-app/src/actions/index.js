@@ -36,8 +36,8 @@ export const loginUser = props => dispatch => {
       .then(res => {
         console.log(res.data)
         localStorage.setItem('token', res.data.access_token)
-        push('/protected')
         dispatch({ type: LOGIN_USER_SUCCESS }) //what payload??
+        push('/protected')
       })
       .catch(err => 
         dispatch({ type: LOGIN_USER_ERROR, payload: 'There was an error loggin in the user'  }))
@@ -89,6 +89,7 @@ export const getStrain=  () => dispatch => {//get strain DONE!
   .then(res => {
     console.log(res.data.currentStrain.strain);
     dispatch({ type: GET_STRAIN_SUCCESS, payload: res.data.currentStrain.strain })
+    push('/protected')
   })
   .catch(err =>
     console.log(err),
