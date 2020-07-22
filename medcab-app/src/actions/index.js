@@ -35,7 +35,6 @@ export const loginUser = props => dispatch => {
         console.log(res.data)
         localStorage.setItem('token', res.data.access_token)
         dispatch({ type: LOGIN_USER_SUCCESS }) //what payload??
-        push('/protected')
       })
       .catch(err => 
         dispatch({ type: LOGIN_USER_ERROR, payload: 'There was an error loggin in the user'  }))
