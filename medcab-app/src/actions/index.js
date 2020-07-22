@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 //ACTIONS 
 
-import { useHistory } from 'react-router-dom'
 import { axiosWithAuth, axiosRegister } from '../utils/axiosWithAuth'
 
 import { 
@@ -26,7 +25,6 @@ import {
 
 //login stuff kind of works
 export const loginUser = props => dispatch => {
-  const { push } = useHistory()
 
   dispatch({ type: LOGIN_USER_START })
     //////temps will be placed with userCheck props//////
@@ -79,7 +77,6 @@ export const addUser = (newUser) => dispatch => {
 };
 
 export const getStrain=  () => dispatch => {//get strain DONE!
-  const { push } = useHistory()
   dispatch({ type: GET_STRAIN_START });
   axiosWithAuth()
   .get(`/users/currentuser`,  {
@@ -90,7 +87,6 @@ export const getStrain=  () => dispatch => {//get strain DONE!
   .then(res => {
     console.log(res.data.currentStrain.strain);
     dispatch({ type: GET_STRAIN_SUCCESS, payload: res.data.currentStrain.strain })
-    push('/protected')
   })
   .catch(err =>
     console.log(err),
