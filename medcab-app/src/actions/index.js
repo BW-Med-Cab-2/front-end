@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 //ACTIONS 
 
-
+import { useHistory } from 'react-router-dom'
 import { axiosWithAuth, axiosRegister } from '../utils/axiosWithAuth'
 
 import { 
@@ -26,7 +26,7 @@ import {
 
 //login stuff kind of works
 export const loginUser = props => dispatch => {
- 
+  const { push } = useHistory()
 
   dispatch({ type: LOGIN_USER_START })
     //////temps will be placed with userCheck props//////
@@ -36,7 +36,7 @@ export const loginUser = props => dispatch => {
       .then(res => {
         console.log(res.data)
         localStorage.setItem('token', res.data.access_token)
-        this.props.history.push('/')
+        push('/protected')
         dispatch({ type: LOGIN_USER_SUCCESS }) //what payload??
       })
       .catch(err => 
