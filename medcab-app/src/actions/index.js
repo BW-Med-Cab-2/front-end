@@ -79,6 +79,7 @@ export const addUser = (newUser) => dispatch => {
 };
 
 export const getStrain=  () => dispatch => {//get strain DONE!
+  const { push } = useHistory()
   dispatch({ type: GET_STRAIN_START });
   axiosWithAuth()
   .get(`/users/currentuser`,  {
