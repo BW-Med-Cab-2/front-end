@@ -2,7 +2,7 @@
 //Import List//
 import React, { useState, useEffect } from 'react';
 import '../styles/App.css';
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, useHistory } from 'react-router-dom'
 import { ContainerDiv } from '../styles/styled'
 import AppNav from './AppNav'
 import Home from './Home'
@@ -59,13 +59,11 @@ function App(props) {
   const symValues = symptoms.filter(symptom => symptom.value.length > 0)
                                 .map(symptom => symptom.value)
                                 .join(', ')
+  const { push } = useHistory()
   //Questions handelers
   const symptomSubmit = e  => {
-    e.preventDefault() //take sym values and put to a string
-    // const symValues = symptoms.filter(symptom => symptom.value.length > 0)
-    //                             .map(symptom => symptom.value)
-    //                             .join(', ')
-                                console.log(symValues)
+    e.preventDefault()
+    console.log(symValues)
     //Get the resulting strain from endpoint - using my token and sym string
     axios.get(`https://medcab2.herokuapp.com/otherapis/strainmodel/${symValues}`, 
         {
@@ -75,23 +73,9 @@ function App(props) {
         }
         )
         .then(res => {//give me this
-          //Server issue - Error 500 Internal Server Error (was working fine a couple of hours ago now it isn't)
-          console.log(res.data.currentStrain.strain)
           
-        //   return axiosWithAuth()
-        //   .post('/users/currentuser', {
-        //     headers: {//hey i am logged in and here is my token
-        //     'Authorization': `Bearer ${window.localStorage.getItem('token')}`
-        //     }
-        // })
-        //   .then(res =>{
-        //     console.log(res)
-        //     dispatch({ type: UPDATE_USER_SUCCESS, payload: res.data.currentStrain.strain  })
-        //   })
-        //   .catch(err => {
-        //     console.log(err.response.message)
-        //     dispatch({ type: UPDATE_USER_ERROR, payload: err.response.message })
-        //   })
+          console.log(res.data.currentStrain.strain)
+          push('/protected')       
         })
         .catch(err => console.log(err))
         .finally(()=> setSymptoms(initialSymptoms))
@@ -139,6 +123,10 @@ function App(props) {
     }
 
     props.loginUser(userCheck)
+      .then(() => {
+      push('/protected')
+    })
+      .catch(err => console.log(err))
      
     setLogin(initialLogin)
 
