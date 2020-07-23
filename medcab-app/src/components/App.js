@@ -122,11 +122,10 @@ function App(props) {
       password: login.password.trim()
     }
 
-    props.loginUser(userCheck)
-      .then(() => {
+    try {
+      props.loginUser(userCheck)
       push('/protected')
-    })
-      .catch(err => console.log(err))
+    } catch(err) {console.log(err)}
      
     setLogin(initialLogin)
 
